@@ -22,6 +22,13 @@
 	<!-- 默认的注解映射的支持 -->
 	<mvc:annotation-driven />
 
+    <!--<mvc:resources mapping="/img/**" location="/img/" />
+    <mvc:resources mapping="/js/**" location="/js/" />
+    <mvc:resources mapping="/css/**" location="/css/" />-->
+
+    <!-- 对静态资源文件的访问 -->
+    <mvc:default-servlet-handler />
+
 	<!-- 视图解释类 -->
 	<!-- <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver"> 
 		<property name="prefix" value="/"/> <property name="suffix" value=".htm"/>可为空,方便实现自已的依据扩展名来选择视图解释类的逻辑 

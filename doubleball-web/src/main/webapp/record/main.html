@@ -1,0 +1,134 @@
+#parse("/common/top.html")
+
+<div class="row-fluid">
+
+
+    <form class="form-horizontal" id="insertRecord_form">
+        <fieldset>
+            <div id="legend" class="">
+                <legend class="">录入数据</legend>
+            </div>
+            <div class="control-group">
+
+                <!-- Text input-->
+                <label class="control-label">期号：</label>
+
+                <div class="controls">
+                    <input type="text" placeholder="请输入6位数期号" class="input-xlarge" name="period">
+                </div>
+            </div>
+
+            <div class="control-group">
+
+                <!-- Text input-->
+                <label class="control-label">红球：</label>
+
+                <div class="controls inline">
+                    <input type="text" placeholder="" class="input-mini" name="redBall1">
+                    <input type="text" placeholder="" class="input-mini" name="redBall2">
+                    <input type="text" placeholder="" class="input-mini" name="redBall3">
+                    <input type="text" placeholder="" class="input-mini" name="redBall4">
+                    <input type="text" placeholder="" class="input-mini" name="redBall5">
+                    <input type="text" placeholder="" class="input-mini" name="redBall6">
+
+                </div>
+            </div>
+
+            <div class="control-group">
+
+                <!-- Text input-->
+                <label class="control-label">蓝球：</label>
+
+                <div class="controls inline">
+                    <input type="text" placeholder="" class="input-mini" name="blueBall">
+                    <p class="help-block">提示：球号如果是个位数，不需要补充0！</p>
+                </div>
+            </div>
+
+
+            <div class="form-actions" style="text-align: right; padding-right: 200px;">
+                <div class="controls">
+                    <button class="btn btn-default" type="reset"><i class="icon-refresh"></i> 重置</button>
+                    <button class="btn btn-primary save_btn" type="button"><i class="icon-zoom-in icon-white"></i> 保存</button>
+                </div>
+
+            </div>
+
+        </fieldset>
+    </form>
+
+</div>
+
+
+<script type="text/javascript">
+
+    $(function (){
+
+        init_validateForm();
+
+        $(".save_btn").click(function (){
+            if(form_validator_obj.form()){
+                save();
+            }
+        });
+    })
+
+    function save () {
+        var url = '$!{context_path}/record/save';
+        var params = $("#insertRecord_form").serialize();
+
+        jQuery.ajax({
+            type:"post",
+            url:  url,
+            data: params ,
+            dataType: 'json',
+            success:function(data){
+                /*oSettings = schoolDT.fnSettings();
+                oSettings.oApi._fnDraw( oSettings );*/
+                if (data.success) {
+                    myNotifications("保存成功！","success");
+                    form_validator_obj.resetForm();
+//                    refreshDT();
+                } else {
+                    myNotifications("保存失败！","error");
+                }
+            },
+            beforeSend :function(){
+
+            },
+            complete:function(){
+
+            }
+        });
+
+    }
+
+    var form_validator_obj ;
+    function init_validateForm (){
+        form_validator_obj = $("#insertRecord_form").validate({
+            rules: {
+                period: { required: true, digits: true, rangelength: [7, 7] },
+                redBall1: { required: true, digits: true, max: 33, min:1 },
+                redBall2: { required: true, digits: true, max: 33, min:1 },
+                redBall3: { required: true, digits: true, max: 33, min:1 },
+                redBall4: { required: true, digits: true, max: 33, min:1 },
+                redBall5: { required: true, digits: true, max: 33, min:1 },
+                redBall6: { required: true, digits: true, max: 33, min:1 },
+                blueBall: { required: true, digits: true, max: 16, min:1 }
+            },
+            messages: {
+                period: { required: '请出入期号', digits: '期号必须是整数', rangelength: '请输入7位数字的期号' },
+                redBall1: { required: '请填写完整红球号码', digits: '你是逗比嘛', max:'你是逗比嘛', min:'你是逗比嘛' },
+                redBall2: { required: '请填写完整红球号码', digits: '你是逗比嘛', max:'你是逗比嘛', min:'你是逗比嘛' },
+                redBall3: { required: '请填写完整红球号码', digits: '你是逗比嘛', max:'你是逗比嘛', min:'你是逗比嘛' },
+                redBall4: { required: '请填写完整红球号码', digits: '你是逗比嘛', max:'你是逗比嘛', min:'你是逗比嘛' },
+                redBall5: { required: '请填写完整红球号码', digits: '你是逗比嘛', max:'你是逗比嘛', min:'你是逗比嘛' },
+                redBall6: { required: '请填写完整红球号码', digits: '你是逗比嘛', max:'你是逗比嘛', min:'你是逗比嘛' },
+                blueBall: { required: '请填写蓝球号码', digits: '你是逗比嘛', max:'你是逗比嘛', min:'你是逗比嘛' }
+            }
+        });
+    }
+</script>
+
+
+#parse("/common/foot.html")

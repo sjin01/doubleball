@@ -506,3 +506,21 @@ box-shadow: 0 0 10px #BDBDBD;
 .box-content.buttons{
 min-height:297px;
 }
+
+
+
+
+/**
+*Jquery validata css
+*@Authod Jz by 2014-04-17
+*/
+em.error { color: red; font-family: "Courier New" }
+em.error {
+    background:url("../img/validate-error/unchecked.gif") no-repeat 0px 0px;
+    padding-left: 16px;
+}
+em.success {
+    background:url("../img/validate-error/checked.gif") no-repeat 0px 0px;
+    padding-left: 16px;
+}
+input.error { border: 1px dotted red; }

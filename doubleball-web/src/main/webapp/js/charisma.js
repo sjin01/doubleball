@@ -2,10 +2,18 @@ $(document).ready(function(){
 	//themes, change CSS with JS
 	//default theme(CSS) is cerulean, change it if needed
 	var current_theme = $.cookie('current_theme')==null ? 'cerulean' :$.cookie('current_theme');
+
+    var curWwwPath = window.document.location.href;
+    var pathName = window.document.location.pathname;
+    var pos = curWwwPath.indexOf(pathName);
+    var localhostPaht = curWwwPath.substring(0, pos);
+    var projectName = pathName.substring(0, pathName.substr(1).indexOf('/') + 1);
+    var bashPath = localhostPaht + projectName;
+
 	switch_theme(current_theme);
-	
+
 	$('#themes a[data-value="'+current_theme+'"]').find('i').addClass('icon-ok');
-				 
+
 	$('#themes a').click(function(e){
 		e.preventDefault();
 		current_theme=$(this).attr('data-value');
@@ -14,19 +22,19 @@ $(document).ready(function(){
 		$('#themes i').removeClass('icon-ok');
 		$(this).find('i').addClass('icon-ok');
 	});
-	
-	
+
+
 	function switch_theme(theme_name)
 	{
-		$('#bs-css').attr('href','css/bootstrap-'+theme_name+'.css');
+		$('#bs-css').attr('href',bashPath + '/css/bootstrap-'+theme_name+'.css');
 	}
-	
+
 	//ajax menu checkbox
 	$('#is-ajax').click(function(e){
 		$.cookie('is-ajax',$(this).prop('checked'),{expires:365});
 	});
 	$('#is-ajax').prop('checked',$.cookie('is-ajax')==='true' ? true : false);
-	
+
 	//disbaling some functions for Internet Explorer
 	if($.browser.msie)
 	{
@@ -34,16 +42,16 @@ $(document).ready(function(){
 		$('#for-is-ajax').hide();
 		$('#toggle-fullscreen').hide();
 		$('.login-box').find('.input-large').removeClass('span10');
-		
+
 	}
-	
-	
+
+
 	//highlight current / active link
 	$('ul.main-menu li a').each(function(){
 		if($($(this))[0].href==String(window.location))
 			$(this).parent().addClass('active');
 	});
-	
+
 	//establish history variables
 	var
 		History = window.History, // Note: We are using a capital H instead of a lower h
@@ -65,7 +73,7 @@ $(document).ready(function(){
 			}
 		});
 	});
-	
+
 	//ajaxify menus
 	$('a.ajax-link').click(function(e){
 		if($.browser.msie) e.which=1;
@@ -80,9 +88,9 @@ $(document).ready(function(){
 		var $clink=$(this);
 		History.pushState(null, null, $clink.attr('href'));
 		$('ul.main-menu li.active').removeClass('active');
-		$clink.parent('li').addClass('active');	
+		$clink.parent('li').addClass('active');
 	});
-	
+
 	//animating menus on hover
 	$('ul.main-menu li:not(.nav-header)').hover(function(){
 		$(this).animate({'margin-left':'+=5'},300);
@@ -90,24 +98,24 @@ $(document).ready(function(){
 	function(){
 		$(this).animate({'margin-left':'-=5'},300);
 	});
-	
+
 	//other things to do on document ready, seperated for ajax calls
 	docReady();
 });
-		
-		
+
+
 function docReady(){
 	//prevent # links from moving to top
 	$('a[href="#"][data-top!=true]').click(function(e){
 		e.preventDefault();
 	});
-	
+
 	//rich text editor
 	$('.cleditor').cleditor();
-	
+
 	//datepicker
 	$('.datepicker').datepicker();
-	
+
 	//notifications
 	$('.noty').click(function(e){
 		e.preventDefault();
@@ -257,7 +265,7 @@ function docReady(){
 			title: "Visit Site",
 			content: "Visit your front end from here."
 		});
-		
+
 		tour.restart();
 	}
 
@@ -287,7 +295,7 @@ function docReady(){
 
 
 
-		
+
 	//initialize the external events for calender
 
 	$('#external-events div.external-event').each(function() {
@@ -296,17 +304,17 @@ function docReady(){
 		var eventObject = {
 			title: $.trim($(this).text()) // use the element's text as the event title
 		};
-		
+
 		// store the Event Object in the DOM element so we can get to it later
 		$(this).data('eventObject', eventObject);
-		
+
 		// make the event draggable using jQuery UI
 		$(this).draggable({
 			zIndex: 999,
 			revert: true,      // will cause the event to go back to its
 			revertDuration: 0  //  original position after the drag
 		});
-		
+
 	});
 
 
@@ -320,31 +328,31 @@ function docReady(){
 		editable: true,
 		droppable: true, // this allows things to be dropped onto the calendar !!!
 		drop: function(date, allDay) { // this function is called when something is dropped
-		
+
 			// retrieve the dropped element's stored Event Object
 			var originalEventObject = $(this).data('eventObject');
-			
+
 			// we need to copy it, so that multiple events don't have a reference to the same object
 			var copiedEventObject = $.extend({}, originalEventObject);
-			
+
 			// assign it the date that was reported
 			copiedEventObject.start = date;
 			copiedEventObject.allDay = allDay;
-			
+
 			// render the event on the calendar
 			// the last `true` argument determines if the event "sticks" (http://arshaw.com/fullcalendar/docs/event_rendering/renderEvent/)
 			$('#calendar').fullCalendar('renderEvent', copiedEventObject, true);
-			
+
 			// is the "remove after drop" checkbox checked?
 			if ($('#drop-remove').is(':checked')) {
 				// if so, remove the element from the "Draggable Events" list
 				$(this).remove();
 			}
-			
+
 		}
 	});
-	
-	
+
+
 	//chart with points
 	if($("#sincos").length)
 	{
@@ -401,7 +409,7 @@ function docReady(){
 					previousPoint = null;
 				}
 		});
-		
+
 
 
 		$("#sincos").bind("plotclick", function (event, pos, item) {
@@ -411,14 +419,14 @@ function docReady(){
 			}
 		});
 	}
-	
+
 	//flot chart
 	if($("#flotchart").length)
 	{
 		var d1 = [];
 		for (var i = 0; i < Math.PI * 2; i += 0.25)
 			d1.push([i, Math.sin(i)]);
-		
+
 		var d2 = [];
 		for (var i = 0; i < Math.PI * 2; i += 0.25)
 			d2.push([i, Math.cos(i)]);
@@ -426,7 +434,7 @@ function docReady(){
 		var d3 = [];
 		for (var i = 0; i < Math.PI * 2; i += 0.1)
 			d3.push([i, Math.tan(i)]);
-		
+
 		$.plot($("#flotchart"), [
 			{ label: "sin(x)",  data: d1},
 			{ label: "cos(x)",  data: d2},
@@ -449,7 +457,7 @@ function docReady(){
 			}
 		});
 	}
-	
+
 	//stack chart
 	if($("#stackchart").length)
 	{
@@ -502,7 +510,7 @@ function docReady(){
 	{ label: "Firefox",  data: 90},
 	{ label: "Chrome",  data: 112}
 	];
-	
+
 	if($("#piechart").length)
 	{
 		$.plot($("#piechart"), data,
@@ -520,7 +528,7 @@ function docReady(){
 				show: false
 			}
 		});
-		
+
 		function pieHover(event, pos, obj)
 		{
 			if (!obj)
@@ -530,7 +538,7 @@ function docReady(){
 		}
 		$("#piechart").bind("plothover", pieHover);
 	}
-	
+
 	//donut chart
 	if($("#donutchart").length)
 	{
@@ -603,7 +611,7 @@ function docReady(){
 			plot.setData([ getRandomData() ]);
 			// since the axes don't change, we don't need to call plot.setupGrid()
 			plot.draw();
-			
+
 			setTimeout(update, updateInterval);
 		}
 
@@ -700,3 +708,26 @@ $.extend( $.fn.dataTableExt.oPagination, {
 		}
 	}
 });
+
+
+/****
+ *  自定义
+ */
+
+/**
+ * notifications 通知
+ * @param text  内容
+ * @param type  类型：  success | error | alert 。。。
+ * @param layout  弹出位置：bottomRight |  top | topLeft  | topRight | bottomLeft 。。。
+ */
+function myNotifications (text , type , layout) {
+    if(!layout){
+        layout = 'bottomRight';  // 默认从右下角 弹出
+    }
+    noty({
+        "text": text,
+        "layout": layout,
+        "type": type,  // error ---  alert
+        "animateOpen": {"opacity": "show"}
+    });
+}
