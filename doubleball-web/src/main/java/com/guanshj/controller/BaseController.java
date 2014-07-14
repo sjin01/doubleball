@@ -11,7 +11,8 @@ import org.apache.log4j.Logger;
  */
 public class BaseController {
 
-    protected static final String AJAX_MESSAGE_SUCCESS = "success";
+    protected static final String AJAX_SUCCESS = "success";
+    protected static final String AJAX_MESSAGE = "message";
 
     protected Logger logger = Logger.getLogger(getClass());
 

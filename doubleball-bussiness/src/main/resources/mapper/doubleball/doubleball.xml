@@ -29,6 +29,8 @@
             <if test="period!=null"> AND period=#{period} </if>
             <if test="value!=null"> AND value=#{value} </if>
             <if test="type!=null"> AND type=#{type} </if>
+
+            <if test="sSearch !=null and sSearch !='' "> period like '%${sSearch}%'</if>
         </trim>
     </sql>
 
@@ -49,6 +51,19 @@
             <if test="value!=null"> #{value}, </if>
             <if test="type!=null"> #{type}, </if>
         </trim>
+    </insert>
+
+    <!--  insertList 批量插入  mysql 主键需要自增 -->
+    <insert id="insertList" parameterType="java.util.List">
+        insert into t_doubleball (  period ,value ,type )
+        values
+        <foreach collection="list" item="item" index="index"  separator="," >
+            (
+                #{item.period},
+                #{item.value},
+                #{item.type}
+            )
+        </foreach>
     </insert>
 
     <!-- 删除,主键删除   -->
@@ -82,7 +97,23 @@
     </select>
     <!--   分页 -->
     <select id="selectByEntityPaging_page" resultMap="BaseResultMap"  parameterType="com.guanshj.model.DoubleBall">
-        select <include refid="Base_Column_List"/> from t_doubleball
+        select <include refid="Base_Column_List"/> from t_doubleball <include refid="where"/> <include refid="andOtherAll"/>
+    </select>
+    
+    <!-- 查询 view 横向显示红球-->
+    <select id="selectTableDataView_page" resultType="com.guanshj.vo.DoubleBallDto" parameterType="com.guanshj.model.DoubleBall">
+        select period ,
+          max(case type when 11 then value else null end) redBall1,
+          max(case type when 12 then value else null end) redBall2,
+          max(case type when 13 then value else null end) redBall3,
+          max(case type when 13 then value else null end) redBall4,
+          max(case type when 13 then value else null end) redBall5,
+          max(case type when 13 then value else null end) redBall6,
+          max(case type when 2 then value else null end) blueBall
+          from t_doubleball
+        <include refid="where"/> <include refid="andOtherAll"/>
+
+        group by period
     </select>
 
 </mapper>

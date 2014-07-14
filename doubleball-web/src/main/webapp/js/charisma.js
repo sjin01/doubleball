@@ -269,14 +269,7 @@ function docReady(){
 		tour.restart();
 	}
 
-	//datatable
-	$('.datatable').dataTable({
-			"sDom": "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span12'i><'span12 center'p>>",
-			"sPaginationType": "bootstrap",
-			"oLanguage": {
-			"sLengthMenu": "_MENU_ records per page"
-			}
-		} );
+
 	$('.btn-close').click(function(e){
 		e.preventDefault();
 		$(this).parent().parent().parent().fadeOut();
@@ -621,92 +614,173 @@ function docReady(){
 
 
 //additional functions for data table
-$.fn.dataTableExt.oApi.fnPagingInfo = function ( oSettings )
-{
-	return {
-		"iStart":         oSettings._iDisplayStart,
-		"iEnd":           oSettings.fnDisplayEnd(),
-		"iLength":        oSettings._iDisplayLength,
-		"iTotal":         oSettings.fnRecordsTotal(),
-		"iFilteredTotal": oSettings.fnRecordsDisplay(),
-		"iPage":          Math.ceil( oSettings._iDisplayStart / oSettings._iDisplayLength ),
-		"iTotalPages":    Math.ceil( oSettings.fnRecordsDisplay() / oSettings._iDisplayLength )
-	};
-}
-$.extend( $.fn.dataTableExt.oPagination, {
-	"bootstrap": {
-		"fnInit": function( oSettings, nPaging, fnDraw ) {
-			var oLang = oSettings.oLanguage.oPaginate;
-			var fnClickHandler = function ( e ) {
-				e.preventDefault();
-				if ( oSettings.oApi._fnPageChange(oSettings, e.data.action) ) {
-					fnDraw( oSettings );
-				}
-			};
+$.fn.dataTableExt.oApi.fnPagingInfo = function (oSettings) {
+    return {
+        "iStart": oSettings._iDisplayStart,
+        "iEnd": oSettings.fnDisplayEnd(),
+        "iLength": oSettings._iDisplayLength,
+        "iTotal": oSettings.fnRecordsTotal(),
+        "iFilteredTotal": oSettings.fnRecordsDisplay(),
+        "iPage": Math.ceil(oSettings._iDisplayStart / oSettings._iDisplayLength),
+        "iTotalPages": Math.ceil(oSettings.fnRecordsDisplay() / oSettings._iDisplayLength)
+    };
+};
+$.extend($.fn.dataTableExt.oPagination, {
+    "bootstrap": {
+        "fnInit": function (oSettings, nPaging, fnDraw) {
 
-			$(nPaging).addClass('pagination').append(
-				'<ul>'+
-					'<li class="prev disabled"><a href="#">&larr; '+oLang.sPrevious+'</a></li>'+
-					'<li class="next disabled"><a href="#">'+oLang.sNext+' &rarr; </a></li>'+
-				'</ul>'
-			);
-			var els = $('a', nPaging);
-			$(els[0]).bind( 'click.DT', { action: "previous" }, fnClickHandler );
-			$(els[1]).bind( 'click.DT', { action: "next" }, fnClickHandler );
-		},
+            /**
+             * @see 取得选中行的数据
+             * @author zhangcong
+             */
+            var $instance = oSettings.oInstance;
+            $instance.getSelectedData = function () {
+                var dataArr = oSettings.aoData;
+                var resArr = [];
+                var $allCheckbox = $targetTable.find("input.content-checkbox");
+                for (var i = 0; i < $allCheckbox.length; i++) {
+                    var item = $allCheckbox[i];
+                    if (item.checked) {
+                        resArr.push(dataArr[i]._aData);
+                    }
+                }
+                return resArr;
+            }
 
-		"fnUpdate": function ( oSettings, fnDraw ) {
-			var iListLength = 5;
-			var oPaging = oSettings.oInstance.fnPagingInfo();
-			var an = oSettings.aanFeatures.p;
-			var i, j, sClass, iStart, iEnd, iHalf=Math.floor(iListLength/2);
+            /**
+             * @see 增加表格前面的复选框。具体可以查看app.html页面。
+             * ********************************************start************************************
+             */
+            var $targetTable = $(oSettings.nTable);
+            /**
+             * @see 单击全选的复选框，同时选中/取消选中每行的复选框
+             * @author zhangcong
+             */
+            $targetTable.find("input.head-checkbox").bind("click", function () {
+                var $arr = $targetTable.find("input.content-checkbox");
+                if (this.checked) {
+                    $targetTable.find("input.content-checkbox").each(function () {
+                        if (!this.checked) {
+                            this.checked = true;
+                            $(this).parent().addClass("checked");
+                        }
+                    });
+                } else {
+                    $targetTable.find("input.content-checkbox").each(function () {
+                        if (this.checked) {
+                            this.checked = false;
+                            $(this).parent().removeClass("checked");
+                        }
+                    });
+                }
+            });
+            /**
+             * @see 单击单行的复选框，判断全选的复选框是否应该被选中
+             * @author zhangcong
+             */
+            $targetTable.on("click", "input.content-checkbox", function () {
+                if (this.checked) {
+                    $(this).parent().addClass("checked");
+                } else {
+                    $(this).parent().removeClass("checked");
+                }
+                if ($targetTable.find("input.content-checkbox").length > $targetTable.find("input.content-checkbox:checked").length) {
+                    $targetTable.find("input.head-checkbox")[0].checked = false;
+                    $targetTable.find("input.head-checkbox").parent().removeClass("checked");
+                } else {
+                    $targetTable.find("input.head-checkbox")[0].checked = true;
+                    $targetTable.find("input.head-checkbox").parent().addClass("checked");
+                }
+            });
+            /**
+             * ********************************************end************************************
+             */
 
-			if ( oPaging.iTotalPages < iListLength) {
-				iStart = 1;
-				iEnd = oPaging.iTotalPages;
-			}
-			else if ( oPaging.iPage <= iHalf ) {
-				iStart = 1;
-				iEnd = iListLength;
-			} else if ( oPaging.iPage >= (oPaging.iTotalPages-iHalf) ) {
-				iStart = oPaging.iTotalPages - iListLength + 1;
-				iEnd = oPaging.iTotalPages;
-			} else {
-				iStart = oPaging.iPage - iHalf + 1;
-				iEnd = iStart + iListLength - 1;
-			}
+            var oLang = oSettings.oLanguage.oPaginate;
+            var fnClickHandler = function (e) {
+                e.preventDefault();
+                if (oSettings.oApi._fnPageChange(oSettings, e.data.action)) {
+                    fnDraw(oSettings);
+                }
+            };
 
-			for ( i=0, iLen=an.length ; i<iLen ; i++ ) {
-				// remove the middle elements
-				$('li:gt(0)', an[i]).filter(':not(:last)').remove();
+            /**
+             * @see 以下添加了“首页”和“末页”
+             * @updator zhangcong
+             */
+            $(nPaging).addClass('pagination').append(
+                '<ul>' +
+                    '<li class="first disabled"><a href="#">' + oLang.sFirst + '</a></li>' +
+                    '<li class="prev disabled"><a href="#">' + oLang.sPrevious + '</a></li>' +
+                    '<li class="next disabled"><a href="#">' + oLang.sNext + '</a></li>' +
+                    '<li class="last disabled"><a href="#">' + oLang.sLast + '</a></li>' +
+                    '</ul>'
+            );
+            var els = $('a', nPaging);
+            $(els[0]).bind('click.DT', { action: "first" }, fnClickHandler);
+            $(els[1]).bind('click.DT', { action: "previous" }, fnClickHandler);
+            $(els[2]).bind('click.DT', { action: "next" }, fnClickHandler);
+            $(els[3]).bind('click.DT', { action: "last" }, fnClickHandler);
+        },
 
-				// add the new list items and their event handlers
-				for ( j=iStart ; j<=iEnd ; j++ ) {
-					sClass = (j==oPaging.iPage+1) ? 'class="active"' : '';
-					$('<li '+sClass+'><a href="#">'+j+'</a></li>')
-						.insertBefore( $('li:last', an[i])[0] )
-						.bind('click', function (e) {
-							e.preventDefault();
-							oSettings._iDisplayStart = (parseInt($('a', this).text(),10)-1) * oPaging.iLength;
-							fnDraw( oSettings );
-						} );
-				}
+        "fnUpdate": function (oSettings, fnDraw) {
+            var iListLength = 5;
+            var oPaging = oSettings.oInstance.fnPagingInfo();
+            var an = oSettings.aanFeatures.p;
+            var i, j, sClass, iStart, iEnd, iHalf = Math.floor(iListLength / 2);
 
-				// add / remove disabled classes from the static elements
-				if ( oPaging.iPage === 0 ) {
-					$('li:first', an[i]).addClass('disabled');
-				} else {
-					$('li:first', an[i]).removeClass('disabled');
-				}
+            if (oPaging.iTotalPages < iListLength) {
+                iStart = 1;
+                iEnd = oPaging.iTotalPages;
+            }
+            else if (oPaging.iPage <= iHalf) {
+                iStart = 1;
+                iEnd = iListLength;
+            } else if (oPaging.iPage >= (oPaging.iTotalPages - iHalf)) {
+                iStart = oPaging.iTotalPages - iListLength + 1;
+                iEnd = oPaging.iTotalPages;
+            } else {
+                iStart = oPaging.iPage - iHalf + 1;
+                iEnd = iStart + iListLength - 1;
+            }
 
-				if ( oPaging.iPage === oPaging.iTotalPages-1 || oPaging.iTotalPages === 0 ) {
-					$('li:last', an[i]).addClass('disabled');
-				} else {
-					$('li:last', an[i]).removeClass('disabled');
-				}
-			}
-		}
-	}
+            for (i = 0, iLen = an.length; i < iLen; i++) {
+                // remove the middle elements
+                //$('li:gt(0)', an[i]).filter(':not(:last)').remove();
+
+                $('li', an[i]).filter(':not(.first)').filter(':not(.prev)').filter(':not(.next)').filter(':not(.last)').remove();
+
+                // add the new list items and their event handlers
+                for (j = iStart; j <= iEnd; j++) {
+                    sClass = (j == oPaging.iPage + 1) ? 'class="active"' : '';
+                    $('<li ' + sClass + '><a href="#">' + j + '</a></li>')
+                        .insertBefore($('li.next', an[i])[0])
+                        .bind('click', function (e) {
+                            e.preventDefault();
+                            oSettings._iDisplayStart = (parseInt($('a', this).text(), 10) - 1) * oPaging.iLength;
+                            fnDraw(oSettings);
+                        });
+                }
+
+                // add / remove disabled classes from the static elements
+                if (oPaging.iPage === 0) {
+                    $('li.first', an[i]).addClass('disabled');
+                    $('li.prev', an[i]).addClass('disabled');
+                } else {
+                    $('li.first', an[i]).removeClass('disabled');
+                    $('li.prev', an[i]).removeClass('disabled');
+                }
+
+                if (oPaging.iPage === oPaging.iTotalPages - 1 || oPaging.iTotalPages === 0) {
+                    $('li.last', an[i]).addClass('disabled');
+                    $('li.next', an[i]).addClass('disabled');
+                } else {
+                    $('li.last', an[i]).removeClass('disabled');
+                    $('li.next', an[i]).removeClass('disabled');
+                }
+            }
+        }
+    }
 });
 
 

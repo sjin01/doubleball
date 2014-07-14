@@ -59,11 +59,33 @@
 
 </div>
 
+<div class="row-fluid">
+
+    <table class="table table-striped myDatatable" id="myDatatable">
+        <thead>
+        <tr>
+            <th>期号</th>
+            <th>红球1</th>
+            <th>红球2</th>
+            <th>红球3</th>
+            <th>红球4</th>
+            <th>红球5</th>
+            <th>红球6</th>
+            <th>蓝球</th>
+        </tr>
+        </thead>
+    </table>
+
+</div>
+
 
 <script type="text/javascript">
 
+    var form_validator_obj ;
+
     $(function (){
 
+        initDataTable();
         init_validateForm();
 
         $(".save_btn").click(function (){
@@ -103,7 +125,6 @@
 
     }
 
-    var form_validator_obj ;
     function init_validateForm (){
         form_validator_obj = $("#insertRecord_form").validate({
             rules: {
@@ -127,6 +148,53 @@
                 blueBall: { required: '请填写蓝球号码', digits: '你是逗比嘛', max:'你是逗比嘛', min:'你是逗比嘛' }
             }
         });
+    }
+
+    /**
+     *  datatable  js Code
+     */
+    var doubleBallDT;
+    var doubleBallDT_ajaxSource = '$!{context_path}/record/data';
+    function initDataTable () {
+        doubleBallDT = $('.myDatatable').dataTable({
+            "bServerSide": true,
+            "sAjaxSource": doubleBallDT_ajaxSource,
+            "sServerMethod": "POST",
+            'bPaginate': true,
+            "bProcessing": false,
+            'bFilter': true,
+            "bSort": false,
+            "iDisplayStart": 0,
+            "iDisplayLength": 10,
+            "bLengthChange": false, //关闭每页显示多少条数据
+            "aoColumns": [
+                { "mDataProp": "period" },
+                { "mDataProp": "redBall1"},
+                { "mDataProp": "redBall2"},
+                { "mDataProp": "redBall3"},
+                { "mDataProp": "redBall4"},
+                { "mDataProp": "redBall5"},
+                { "mDataProp": "redBall6"},
+                { "mDataProp": "blueBall" }
+            ],
+            "sDom": "<'row-fluid'<'span12 mySearch'>r>t<'row-fluid'<'span4'i><'span8 center'p>>",
+            "sPaginationType": "bootstrap",
+            "oLanguage": {
+                "sUrl": "$!context_path/js/datatable/zh-CN.txt"
+//                ,"sSearch": '<span class="icon icon-color icon-search"></span>'
+            }
+            /*,
+            "fnServerParams": function ( aoData ) {
+                aoData.push(
+                        { "name": "name", "value": $("#teachername").val() },
+                        { "name": "idcard", "value": $("#teacheridcard").val() },
+                        { "name": "schoolcode", "value": $("#schoolcode").val() },
+                        { "name": "courseid", "value": $("#courseid").val() },
+                        { "name": "sSearch", "value": $("#sSearch").val() }
+
+                );
+            }*/
+        })
     }
 </script>
 

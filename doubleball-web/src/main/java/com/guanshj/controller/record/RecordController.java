@@ -1,12 +1,18 @@
 package com.guanshj.controller.record;
 
 import com.guanshj.controller.BaseController;
+import com.guanshj.framework.util.pagination.Pagination4Datatable;
+import com.guanshj.model.DoubleBall;
+import com.guanshj.services.DoubleBallService;
+import com.guanshj.vo.DoubleBallDto;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -18,6 +24,9 @@ import java.util.Map;
 @Controller
 @RequestMapping(value = "/record")
 public class RecordController extends BaseController{
+
+    @Autowired
+    private DoubleBallService doubleBallService;
 
     /**
      * 该功能模块 主要页面
@@ -59,9 +68,35 @@ public class RecordController extends BaseController{
      */
     @ResponseBody
     @RequestMapping(value = "save")
-    public Object save () throws Exception{
+    public Object save (DoubleBallDto dto) throws Exception{
         Map<String ,Object> map = new HashMap<String, Object>();
-        map.put(AJAX_MESSAGE_SUCCESS ,"true");
+
+        DoubleBall doubleBall = new DoubleBall();
+        doubleBall.setPeriod(dto.getPeriod());
+        List<DoubleBall> list = doubleBallService.selectByEntity(doubleBall);
+        if(list !=null && !list.isEmpty()){
+            map.put(AJAX_SUCCESS, "false");
+            map.put(AJAX_MESSAGE, "本期数据已经存在");
+            return map;
+        }
+
+        doubleBallService.saveDoubleBallRecord(dto.getPeriod(),dto.getRedBall1(),
+                dto.getRedBall2(),dto.getRedBall3(),dto.getRedBall4(),dto.getRedBall5(),
+                dto.getRedBall6(),dto.getBlueBall());
+
+        map.put(AJAX_SUCCESS, "true");
         return map;
+    }
+
+    /**
+     * datatable 分页数据
+     * @return
+     * @throws Exception
+     */
+    @ResponseBody
+    @RequestMapping(value = "data")
+    public Pagination4Datatable data (DoubleBall vo) throws Exception{
+        return Pagination4Datatable.getInstance(doubleBallService.selectTableDataViewPage(vo),
+                vo.getTotalResult(), vo.getsEcho());
     }
 }

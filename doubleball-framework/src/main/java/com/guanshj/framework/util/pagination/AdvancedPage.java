@@ -9,6 +9,8 @@ public class AdvancedPage extends Page implements Serializable {
 	private String sEcho;
 	private Integer iDisplayStart;
 	private Integer iDisplayLength;
+
+    private String sSearch;
 	
 	public int getiTotalDisplayRecords() {
 		iTotalDisplayRecords = this.getTotalResult();
@@ -56,4 +58,12 @@ public class AdvancedPage extends Page implements Serializable {
 	public void setShowCount(int showCount) {
 		super.setShowCount(this.getiDisplayLength());
 	}
+
+    public String getsSearch() {
+        return sSearch;
+    }
+
+    public void setsSearch(String sSearch) {
+        this.sSearch = sSearch;
+    }
 }
