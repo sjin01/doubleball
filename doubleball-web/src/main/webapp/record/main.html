@@ -1,5 +1,36 @@
 #parse("/common/top.html")
 
+<style type="text/css">
+    /* 为了调整 宽度，重写 class属性 */
+    .dropdown-menu {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        z-index: 1000;
+        display: none;
+        float: left;
+        min-width: 56px;
+        padding: 4px 0;
+        margin: 1px 0 0;
+        list-style: none;
+        background-color: #ffffff;
+        border: 1px solid #ccc;
+        border: 1px solid rgba(0, 0, 0, 0.2);
+        *border-right-width: 2px;
+        *border-bottom-width: 2px;
+        -webkit-border-radius: 5px;
+        -moz-border-radius: 5px;
+        border-radius: 5px;
+        -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+        -moz-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+        -webkit-background-clip: padding-box;
+        -moz-background-clip: padding;
+        background-clip: padding-box;
+    }
+
+</style>
+
 <div class="row-fluid">
 
 
@@ -72,16 +103,144 @@
             <th>红球5</th>
             <th>红球6</th>
             <th>蓝球</th>
+            <th>操作</th>
         </tr>
         </thead>
     </table>
 
 </div>
 
+<div class="modal hide fade" id="edit_model" style="width: 700px; margin: -250px 0 0 -350px;">
+
+    <div class="modal-header">
+
+        <button type="button" class="close" data-dismiss="modal">×</button>
+        <h3>编辑记录</h3>
+    </div>
+    <div class="modal-body">
+        <form class="form-horizontal" id="updateRecord_form">
+            <fieldset>
+
+                <div class="control-group">
+
+                    <!-- Text input-->
+                    <label class="control-label">期号：</label>
+
+                    <div class="controls">
+                        <input type="text" placeholder="请输入6位数期号" class="input-xlarge disabled" name="period" id="e_period" readonly="readonly">
+                    </div>
+                </div>
+
+                <div class="control-group">
+
+                    <!-- Text input-->
+                    <label class="control-label">红球：</label>
+
+                    <div class="controls inline">
+                        <input type="text" placeholder="" class="input-mini" name="redBall1" id="e_redBall1">
+                        <input type="text" placeholder="" class="input-mini" name="redBall2" id="e_redBall2">
+                        <input type="text" placeholder="" class="input-mini" name="redBall3" id="e_redBall3">
+                        <input type="text" placeholder="" class="input-mini" name="redBall4" id="e_redBall4">
+                        <input type="text" placeholder="" class="input-mini" name="redBall5" id="e_redBall5">
+                        <input type="text" placeholder="" class="input-mini" name="redBall6" id="e_redBall6">
+
+                    </div>
+                </div>
+
+                <div class="control-group">
+
+                    <!-- Text input-->
+                    <label class="control-label">蓝球：</label>
+
+                    <div class="controls inline">
+                        <input type="text" placeholder="" class="input-mini" name="blueBall" id="e_blueBall">
+                        <p class="help-block">提示：球号如果是个位数，不需要补充0！</p>
+                    </div>
+                </div>
+
+            </fieldset>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <a href="javascript:void(0)" class="btn" id="btnClose" data-dismiss="modal">取消</a>
+        <a href="javascript:void(0)" class="btn btn-primary edit_btn" onclick="">保存</a>
+    </div>
+</div>
+
 
 <script type="text/javascript">
 
     var form_validator_obj ;
+    var formEdit_validator_obj ;
+
+    var oSettings;
+
+    /**
+     *  datatable  js Code
+     */
+    var doubleBallDT;
+    var doubleBallDT_ajaxSource = '$!{context_path}/record/data';
+    function initDataTable () {
+        doubleBallDT = $('.myDatatable').dataTable({
+            "bServerSide": true,
+            "sAjaxSource": doubleBallDT_ajaxSource,
+            "sServerMethod": "POST",
+            'bPaginate': true,
+            "bProcessing": false,
+            'bFilter': true,
+            "bSort": false,
+            "iDisplayStart": 0,
+            "iDisplayLength": 10,
+            "bLengthChange": false, //关闭每页显示多少条数据
+            "aoColumns": [
+                { "mDataProp": "period" },
+                { "mDataProp": "redBall1"},
+                { "mDataProp": "redBall2"},
+                { "mDataProp": "redBall3"},
+                { "mDataProp": "redBall4"},
+                { "mDataProp": "redBall5"},
+                { "mDataProp": "redBall6"},
+                { "mDataProp": "blueBall" },
+                { "mDataProp": function (source,type,val){
+                    var str = '<div class="btn-group">'+
+                            '<button class="btn btn-mini">'+'操作'+'</button>'+
+                            '<button class="btn btn-mini dropdown-toggle" data-toggle="dropdown">'+
+                            '<span class="caret"></span>'+
+                            '</button>'+
+                            '<ul class="dropdown-menu">'+
+                            '<li><a href="javascript:editRecord('+source.period+')" >编辑</a></li>'+
+                            '<li><a href="javascript:removeRecord('+source.period+')" >移除</a></li>'+
+                            '</ul>'+
+                            '</div>';
+                    return str;
+                } }
+            ],
+            "sDom": "<'row-fluid'<'span12 mySearch'>r>t<'row-fluid'<'span4'i><'span8 center'p>>",
+            "sPaginationType": "bootstrap",
+            "oLanguage": {
+                "sUrl": "$!context_path/js/datatable/zh-CN.txt"
+//                ,"sSearch": '<span class="icon icon-color icon-search"></span>'
+            }
+            /*,
+            "fnServerParams": function ( aoData ) {
+                aoData.push(
+                        { "name": "name", "value": $("#teachername").val() },
+                        { "name": "idcard", "value": $("#teacheridcard").val() },
+                        { "name": "schoolcode", "value": $("#schoolcode").val() },
+                        { "name": "courseid", "value": $("#courseid").val() },
+                        { "name": "sSearch", "value": $("#sSearch").val() }
+
+                );
+            }*/
+        })
+    }
+
+    function refresh(){
+        form_validator_obj.resetForm();
+
+        oSettings = doubleBallDT.fnSettings();
+        oSettings.oApi._fnDraw( oSettings );
+    }
 
     $(function (){
 
@@ -90,14 +249,27 @@
 
         $(".save_btn").click(function (){
             if(form_validator_obj.form()){
-                save();
+                save(1);
+            }
+        });
+        $(".edit_btn").click(function (){
+            if(formEdit_validator_obj.form()){
+                save(2);
             }
         });
     })
 
-    function save () {
-        var url = '$!{context_path}/record/save';
-        var params = $("#insertRecord_form").serialize();
+    function save (flag) {
+        var url ;
+        var params;
+
+        if(flag == 1){
+            params = $("#insertRecord_form").serialize();
+            url = '$!{context_path}/record/save';
+        }else if(flag == 2){
+            params = $("#updateRecord_form").serialize();
+            url = '$!{context_path}/record/update';
+        }
 
         jQuery.ajax({
             type:"post",
@@ -105,12 +277,10 @@
             data: params ,
             dataType: 'json',
             success:function(data){
-                /*oSettings = schoolDT.fnSettings();
-                oSettings.oApi._fnDraw( oSettings );*/
+
                 if (data.success) {
                     myNotifications("保存成功！","success");
-                    form_validator_obj.resetForm();
-//                    refreshDT();
+                    refresh();
                 } else {
                     myNotifications("保存失败！","error");
                 }
@@ -148,54 +318,86 @@
                 blueBall: { required: '请填写蓝球号码', digits: '你是逗比嘛', max:'你是逗比嘛', min:'你是逗比嘛' }
             }
         });
+
+        formEdit_validator_obj = $("#updateRecord_form").validate({
+            rules: {
+                period: { required: true, digits: true, rangelength: [7, 7] },
+                redBall1: { required: true, digits: true, max: 33, min:1 },
+                redBall2: { required: true, digits: true, max: 33, min:1 },
+                redBall3: { required: true, digits: true, max: 33, min:1 },
+                redBall4: { required: true, digits: true, max: 33, min:1 },
+                redBall5: { required: true, digits: true, max: 33, min:1 },
+                redBall6: { required: true, digits: true, max: 33, min:1 },
+                blueBall: { required: true, digits: true, max: 16, min:1 }
+            },
+            messages: {
+                period: { required: '请出入期号', digits: '期号必须是整数', rangelength: '请输入7位数字的期号' },
+                redBall1: { required: '请填写完整红球号码', digits: '你是逗比嘛', max:'你是逗比嘛', min:'你是逗比嘛' },
+                redBall2: { required: '请填写完整红球号码', digits: '你是逗比嘛', max:'你是逗比嘛', min:'你是逗比嘛' },
+                redBall3: { required: '请填写完整红球号码', digits: '你是逗比嘛', max:'你是逗比嘛', min:'你是逗比嘛' },
+                redBall4: { required: '请填写完整红球号码', digits: '你是逗比嘛', max:'你是逗比嘛', min:'你是逗比嘛' },
+                redBall5: { required: '请填写完整红球号码', digits: '你是逗比嘛', max:'你是逗比嘛', min:'你是逗比嘛' },
+                redBall6: { required: '请填写完整红球号码', digits: '你是逗比嘛', max:'你是逗比嘛', min:'你是逗比嘛' },
+                blueBall: { required: '请填写蓝球号码', digits: '你是逗比嘛', max:'你是逗比嘛', min:'你是逗比嘛' }
+            }
+        });
     }
 
-    /**
-     *  datatable  js Code
-     */
-    var doubleBallDT;
-    var doubleBallDT_ajaxSource = '$!{context_path}/record/data';
-    function initDataTable () {
-        doubleBallDT = $('.myDatatable').dataTable({
-            "bServerSide": true,
-            "sAjaxSource": doubleBallDT_ajaxSource,
-            "sServerMethod": "POST",
-            'bPaginate': true,
-            "bProcessing": false,
-            'bFilter': true,
-            "bSort": false,
-            "iDisplayStart": 0,
-            "iDisplayLength": 10,
-            "bLengthChange": false, //关闭每页显示多少条数据
-            "aoColumns": [
-                { "mDataProp": "period" },
-                { "mDataProp": "redBall1"},
-                { "mDataProp": "redBall2"},
-                { "mDataProp": "redBall3"},
-                { "mDataProp": "redBall4"},
-                { "mDataProp": "redBall5"},
-                { "mDataProp": "redBall6"},
-                { "mDataProp": "blueBall" }
-            ],
-            "sDom": "<'row-fluid'<'span12 mySearch'>r>t<'row-fluid'<'span4'i><'span8 center'p>>",
-            "sPaginationType": "bootstrap",
-            "oLanguage": {
-                "sUrl": "$!context_path/js/datatable/zh-CN.txt"
-//                ,"sSearch": '<span class="icon icon-color icon-search"></span>'
-            }
-            /*,
-            "fnServerParams": function ( aoData ) {
-                aoData.push(
-                        { "name": "name", "value": $("#teachername").val() },
-                        { "name": "idcard", "value": $("#teacheridcard").val() },
-                        { "name": "schoolcode", "value": $("#schoolcode").val() },
-                        { "name": "courseid", "value": $("#courseid").val() },
-                        { "name": "sSearch", "value": $("#sSearch").val() }
+    function removeRecord (v){
+        myConfirm('真的要移除'+v+'期的开奖记录嘛？' , function () {
 
-                );
-            }*/
+            var url = '$!{context_path}/record/remove';
+            var params = {'period': v };
+
+            jQuery.ajax({
+                type:"post",
+                url:  url,
+                data: params ,
+                dataType: 'json',
+                success:function(data){
+
+                    if (data.success) {
+                        myNotifications("操作成功！","success");
+                        refresh();
+                    } else {
+                        myNotifications("操作失败！","error");
+                    }
+                }
+            });
         })
     }
+
+    function editRecord (v){
+
+        $("#e_period").val(v);
+
+        var url = '$!{context_path}/record/getByPeriod';
+        var params = {'period': v };
+
+        jQuery.ajax({
+            type:"post",
+            url:  url,
+            data: params ,
+            dataType: 'json',
+            success:function(data){
+
+                if (data) {
+                    $("#e_redBall1").val(data.redBall1);
+                    $("#e_redBall2").val(data.redBall2);
+                    $("#e_redBall3").val(data.redBall3);
+                    $("#e_redBall4").val(data.redBall4);
+                    $("#e_redBall5").val(data.redBall5);
+                    $("#e_redBall6").val(data.redBall6);
+                    $("#e_blueBall").val(data.blueBall);
+                } else {
+                }
+            }
+        });
+
+        $("#edit_model").modal({backdrop:'static'});
+    }
+
+
 </script>
 
 

@@ -55,6 +55,6 @@ public interface DoubleBallService {
      * @throws Exception
      */
     void saveDoubleBallRecord(Integer period, Integer redBall1, Integer redBall2, Integer redBall3,
-                              Integer redBall4, Integer redBall5, Integer redBall6, Integer blueBall)
+                              Integer redBall4, Integer redBall5, Integer redBall6, Integer blueBall ,String flag)
             throws Exception;
 }

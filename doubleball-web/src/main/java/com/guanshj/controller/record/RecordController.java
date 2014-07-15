@@ -1,5 +1,6 @@
 package com.guanshj.controller.record;
 
+import com.guanshj.constant.DoubleBallConstant;
 import com.guanshj.controller.BaseController;
 import com.guanshj.framework.util.pagination.Pagination4Datatable;
 import com.guanshj.model.DoubleBall;
@@ -40,29 +41,7 @@ public class RecordController extends BaseController{
     }
 
     /**
-     * 该功能模块 添加子页面
-     * @return
-     * @throws Exception
-     */
-    @RequestMapping(value = "add")
-    public ModelAndView addHtml() throws Exception {
-        ModelAndView mv = new ModelAndView("record/add");
-        return mv;
-    }
-
-    /**
-     * 该功能模块 列表子页面
-     * @return
-     * @throws Exception
-     */
-    @RequestMapping(value = "list")
-    public ModelAndView list () throws Exception{
-        ModelAndView mv = new ModelAndView("record/list");
-        return mv;
-    }
-
-    /**
-     * 保存数据
+     * 保存新增数据
      * @return
      * @throws Exception
      */
@@ -82,11 +61,30 @@ public class RecordController extends BaseController{
 
         doubleBallService.saveDoubleBallRecord(dto.getPeriod(),dto.getRedBall1(),
                 dto.getRedBall2(),dto.getRedBall3(),dto.getRedBall4(),dto.getRedBall5(),
-                dto.getRedBall6(),dto.getBlueBall());
+                dto.getRedBall6(),dto.getBlueBall() ,DoubleBallConstant.FLAG_INSERT);
 
         map.put(AJAX_SUCCESS, "true");
         return map;
     }
+
+    /**
+     * 修改数据
+     * @return
+     * @throws Exception
+     */
+    @ResponseBody
+    @RequestMapping(value = "update")
+    public Object edit (DoubleBallDto dto) throws Exception{
+        Map<String ,Object> map = new HashMap<String, Object>();
+
+        doubleBallService.saveDoubleBallRecord(dto.getPeriod(),dto.getRedBall1(),
+                dto.getRedBall2(),dto.getRedBall3(),dto.getRedBall4(),dto.getRedBall5(),
+                dto.getRedBall6(),dto.getBlueBall() , DoubleBallConstant.FLAG_UPDATE);
+
+        map.put(AJAX_SUCCESS, "true");
+        return map;
+    }
+
 
     /**
      * datatable 分页数据
@@ -98,5 +96,42 @@ public class RecordController extends BaseController{
     public Pagination4Datatable data (DoubleBall vo) throws Exception{
         return Pagination4Datatable.getInstance(doubleBallService.selectTableDataViewPage(vo),
                 vo.getTotalResult(), vo.getsEcho());
+    }
+
+    /**
+     *  删除 一期的记录
+     * @param period
+     * @return
+     * @throws Exception
+     */
+    @ResponseBody
+    @RequestMapping(value = "remove")
+    public Object remove(Integer period) throws Exception {
+        DoubleBall doubleBall = new DoubleBall();
+        doubleBall.setPeriod(period);
+        doubleBallService.deleteByEntity(doubleBall);
+
+        Map<String ,Object> map = new HashMap<String, Object>();
+        map.put(AJAX_SUCCESS, "true");
+        return map;
+    }
+
+    /**
+     *
+     * @return
+     * @throws Exception
+     */
+    @ResponseBody
+    @RequestMapping(value = "getByPeriod")
+    public Object getByPeriod(Integer period) throws Exception{
+        DoubleBall doubleBall = new DoubleBall();
+        doubleBall.setPeriod(period);
+
+        List<DoubleBallDto> list = doubleBallService.selectTableDataViewPage(doubleBall);
+
+        if (list != null && !list.isEmpty())
+            return list.get(0);
+        else
+            return null;
     }
 }

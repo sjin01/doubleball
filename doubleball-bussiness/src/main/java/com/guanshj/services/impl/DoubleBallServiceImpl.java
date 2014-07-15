@@ -1,5 +1,6 @@
 package com.guanshj.services.impl;
 
+import com.guanshj.constant.DoubleBallConstant;
 import com.guanshj.enums.BallType;
 import com.guanshj.model.DoubleBall;
 import com.guanshj.services.DoubleBallService;
@@ -71,11 +72,18 @@ public class DoubleBallServiceImpl extends BaseServiceImpl implements DoubleBall
     @Override
     public void saveDoubleBallRecord(Integer period, Integer redBall1, Integer redBall2,
                                      Integer redBall3, Integer redBall4, Integer redBall5,
-                                     Integer redBall6, Integer blueBall) throws Exception {
+                                     Integer redBall6, Integer blueBall ,String flag) throws Exception {
         // step1 : validate data
         if (period == null || redBall1 == null || redBall2 == null || redBall3 == null || redBall4 == null || redBall5 == null || redBall6 == null || blueBall == null) {
             System.out.println("参数不正确");
             throw new Exception();
+        }
+
+        if(flag.equals(DoubleBallConstant.FLAG_UPDATE)){
+            // 清理数据
+            DoubleBall doubleBall= new DoubleBall();
+            doubleBall.setPeriod(period);
+            this.deleteByEntity(doubleBall);
         }
 
         // step2 : 处理 数据
