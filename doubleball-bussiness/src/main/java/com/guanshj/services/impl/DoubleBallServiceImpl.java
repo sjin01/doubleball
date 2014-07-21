@@ -148,4 +148,9 @@ public class DoubleBallServiceImpl extends BaseServiceImpl implements DoubleBall
         // step 3:批量插入
         this.insertList(insertList);
     }
+
+    @Override
+    public List<DoubleBall> selectValueOrderByCount(Integer type) throws Exception {
+        return (List<DoubleBall>) sqlSessionTemplate.selectList("DoubleBall.selectValueOrderByCount" ,type);
+    }
 }

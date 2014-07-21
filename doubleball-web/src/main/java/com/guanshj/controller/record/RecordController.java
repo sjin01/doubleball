@@ -54,7 +54,7 @@ public class RecordController extends BaseController{
         doubleBall.setPeriod(dto.getPeriod());
         List<DoubleBall> list = doubleBallService.selectByEntity(doubleBall);
         if(list !=null && !list.isEmpty()){
-            map.put(AJAX_SUCCESS, "false");
+            map.put(AJAX_SUCCESS, false);
             map.put(AJAX_MESSAGE, "本期数据已经存在");
             return map;
         }
@@ -63,7 +63,7 @@ public class RecordController extends BaseController{
                 dto.getRedBall2(),dto.getRedBall3(),dto.getRedBall4(),dto.getRedBall5(),
                 dto.getRedBall6(),dto.getBlueBall() ,DoubleBallConstant.FLAG_INSERT);
 
-        map.put(AJAX_SUCCESS, "true");
+        map.put(AJAX_SUCCESS, true);
         return map;
     }
 

@@ -22,3 +22,11 @@ select value, count(value) as cou from wyz500w where type =1 group by value orde
 
 -- #### 所有蓝球 分组，并按出现最多次数排序
 select value, count(value) as cou from wyz500w where type =2 group by value order by cou desc ;
+
+
+##########
+双色球专家杀号公式之红球篇：http://jingyan.baidu.com/article/48b558e35cafc77f38c09a9d.html
+双色球45种杀红公式：http://jingyan.baidu.com/article/a65957f4b66f8c24e67f9b9e.html
+12种双色球杀蓝公式：http://jingyan.baidu.com/article/fedf07376d3a0e35ac8977f9.html
+
+各种公式：http://jingyan.baidu.com/article/f3ad7d0ffdd71b09c3345b9f.html

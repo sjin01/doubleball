@@ -33,6 +33,12 @@
 
 <div class="row-fluid">
 
+    <div class="page-header">
+        <h1>&nbsp;&nbsp;开奖记录
+            <small id="age">及时维护，保证记录的正确性、时效性；是成功的前提</small>
+##            <span class="label label-warning">概览</span>
+        </h1>
+    </div>
 
     <form class="form-horizontal" id="insertRecord_form">
         <fieldset>
@@ -282,7 +288,7 @@
                     myNotifications("保存成功！","success");
                     refresh();
                 } else {
-                    myNotifications("保存失败！","error");
+                    myNotifications("保存失败！"+data.message ,"error");
                 }
             },
             beforeSend :function(){

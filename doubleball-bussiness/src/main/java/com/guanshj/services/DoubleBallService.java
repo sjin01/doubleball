@@ -57,4 +57,19 @@ public interface DoubleBallService {
     void saveDoubleBallRecord(Integer period, Integer redBall1, Integer redBall2, Integer redBall3,
                               Integer redBall4, Integer redBall5, Integer redBall6, Integer blueBall ,String flag)
             throws Exception;
+
+
+    /**********************
+     * ##############  分析
+     * ####################################################################################
+     */
+
+
+    /**
+     * 概览统计 ------ 分组、并按出现次数排序
+     * @param type
+     * @return
+     * @throws Exception
+     */
+    List<DoubleBall> selectValueOrderByCount (Integer type) throws Exception;
 }

@@ -6,6 +6,7 @@
         <result column="period" property="period" jdbcType="INTEGER" />
         <result column="value" property="value" jdbcType="INTEGER" />
         <result column="type" property="type" jdbcType="INTEGER" />
+        <result column="count" property="count" jdbcType="INTEGER" />
     </resultMap>
 
     <sql id="Base_Column_List" >
@@ -114,6 +115,15 @@
         <include refid="where"/> <include refid="andOtherAll"/>
 
         group by period order by period desc
+    </select>
+
+    <!-- 概览统计## 分组、并按出现次数排序 -->
+    <select id="selectValueOrderByCount" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+      select value, count(value) as count
+      from wyz500w
+      where type = #{type}
+      group by value
+      order by count desc
     </select>
 
 </mapper>

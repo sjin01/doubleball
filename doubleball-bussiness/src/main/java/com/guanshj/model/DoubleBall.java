@@ -19,6 +19,8 @@ public class DoubleBall extends AdvancedPage implements Serializable{
     private Integer value;   //开奖球号
     private Integer type;    //1红球；2蓝球
 
+    private Integer count ; // 出现次数
+
     public Integer getId() {
         return id;
     }
@@ -49,5 +51,13 @@ public class DoubleBall extends AdvancedPage implements Serializable{
 
     public void setType(Integer type) {
         this.type = type;
+    }
+
+    public Integer getCount() {
+        return count;
+    }
+
+    public void setCount(Integer count) {
+        this.count = count;
     }
 }
