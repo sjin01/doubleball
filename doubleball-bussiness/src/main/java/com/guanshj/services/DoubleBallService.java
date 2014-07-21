@@ -72,4 +72,11 @@ public interface DoubleBallService {
      * @throws Exception
      */
     List<DoubleBall> selectValueOrderByCount (Integer type) throws Exception;
+
+    /**
+     * 获取当前期号
+     * @return
+     * @throws Exception
+     */
+    Integer selectCurrentPeriod () throws Exception;
 }

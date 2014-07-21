@@ -10,7 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 双色球 服务接口实现类
@@ -151,6 +153,13 @@ public class DoubleBallServiceImpl extends BaseServiceImpl implements DoubleBall
 
     @Override
     public List<DoubleBall> selectValueOrderByCount(Integer type) throws Exception {
-        return (List<DoubleBall>) sqlSessionTemplate.selectList("DoubleBall.selectValueOrderByCount" ,type);
+        Map<String ,Object> map = new HashMap<String, Object>();
+        map.put("type",type);
+        return (List<DoubleBall>) sqlSessionTemplate.selectList("DoubleBall.selectValueOrderByCount" ,map);
+    }
+
+    @Override
+    public Integer selectCurrentPeriod() throws Exception {
+        return (Integer) sqlSessionTemplate.selectOne("DoubleBall.selectCurrentPeriod");
     }
 }

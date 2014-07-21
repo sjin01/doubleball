@@ -8,12 +8,23 @@
     .m_left30 {
         margin-left: 30px;
     }
+
+    .number {
+        display: inline-block;
+        font-size: 14px;
+        font-weight: bold;
+        margin-right: 10px;
+        text-align: right;
+        /*width: 70px;*/
+        zoom: 1;
+        color: green;
+    }
 </style>
 
 <div class="row-fluid">
     <div class="page-header">
         <h1>&nbsp;&nbsp;分析
-            <small id="age">这是一门统计学</small>
+            <small>这是一门统计学</small>
 ##            <span class="label label-warning">概览</span>
         </h1>
     </div>
@@ -30,19 +41,41 @@
 
         <h4>本期开奖号码</h4>
         <div class="well m_top5" >
-            1 2 3 4 5 6 7 : 8
+            $!{currentPeriod}期：
+            #foreach($cRed in $currentRed)
+                <span class="number">$cRed</span>
+            #end
+            : <span class="number">$!{currentBlue}</span>
         </div>
 
         <h4>上期开奖号码</h4>
         <div class="well m_top5">
-            1 2 3 4 5 6 7 : 8
+            $!{prevPeriod}期：
+            #foreach($pRed in $prevRed)
+                <span class="number">$pRed</span>
+            #end
+            : <span class="number">$!{prevBlue}</span>
         </div>
 
         <h4>最多开出次数</h4>
         <div class="well m_top5">
-            红球：1（7次） 2（6次） 3 4 5 6 <a href="#">更多...</a>
+            红球：
+            #foreach($mRed in $maxRed)
+                #if($velocityCount<11)
+                    <span class="green">${mRed.value}</span> <small style="color: #ADA6A6">（${mRed.count}）</small>
+                #end
+            #end
+            <a href="#">更多...</a>
+
             <br/>
-            蓝球：7        <a href="#">更多...</a>
+
+            蓝球：
+            #foreach($mBlue in $maxBlue)
+                #if($velocityCount < 6)
+                    <span class="green">${mBlue.value}</span><small style="color: #ADA6A6">（${mBlue.count}）</small>
+                #end
+            #end
+            <a href="#">更多...</a>
         </div>
 
     </div>

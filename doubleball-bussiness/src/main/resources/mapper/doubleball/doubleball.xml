@@ -118,12 +118,23 @@
     </select>
 
     <!-- 概览统计## 分组、并按出现次数排序 -->
-    <select id="selectValueOrderByCount" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    <select id="selectValueOrderByCount" resultMap="BaseResultMap" parameterType="java.util.Map">
       select value, count(value) as count
-      from wyz500w
-      where type = #{type}
+      from t_doubleball
+      where
+        <if test="type == 2">
+            type = #{type}
+        </if>
+        <if test="type != 2">
+            type like '1%'
+        </if>
       group by value
       order by count desc
+    </select>
+
+    <!-- 当前期号-->
+    <select id="selectCurrentPeriod" resultType="java.lang.Integer">
+        select max(period) from t_doubleball
     </select>
 
 </mapper>
