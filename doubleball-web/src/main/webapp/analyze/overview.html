@@ -1,0 +1,49 @@
+<div class="row-fluid">
+    <div class="page-header">
+        <h3>&nbsp;&nbsp;概览统计&nbsp;
+            <small>简要的概览统计</small>
+        </h3>
+    </div>
+    <div class="m_left30">
+
+        <h4>本期开奖号码</h4>
+        <div class="well m_top5" >
+            $!{currentPeriod}期：
+            #foreach($cRed in $currentRed)
+                <span class="number">$cRed</span>
+            #end
+            : <span class="number">$!{currentBlue}</span>
+        </div>
+
+        <h4>上期开奖号码</h4>
+        <div class="well m_top5">
+            $!{prevPeriod}期：
+            #foreach($pRed in $prevRed)
+                <span class="number">$pRed</span>
+            #end
+            : <span class="number">$!{prevBlue}</span>
+        </div>
+
+        <h4>最多开出次数</h4>
+        <div class="well m_top5">
+            红球：
+            #foreach($mRed in $maxRed)
+                #if($velocityCount<11)
+                    <span class="green">${mRed.value}</span> <small style="color: #ADA6A6">（${mRed.count}）</small>
+                #end
+            #end
+            <a href="#">更多...</a>
+
+            <br/>
+
+            蓝球：
+            #foreach($mBlue in $maxBlue)
+                #if($velocityCount < 6)
+                    <span class="green">${mBlue.value}</span><small style="color: #ADA6A6">（${mBlue.count}）</small>
+                #end
+            #end
+            <a href="#">更多...</a>
+        </div>
+
+    </div>
+</div>

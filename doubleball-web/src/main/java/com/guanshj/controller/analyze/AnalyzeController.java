@@ -33,9 +33,23 @@ public class AnalyzeController extends BaseController{
     @RequestMapping(value = "")
     public ModelAndView main () throws Exception {
         ModelAndView mv = new ModelAndView("analyze/main");
+        return mv;
+    }
 
+    /**
+     * 概览统计---
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "overview")
+    public ModelAndView overview (Integer period) throws Exception{
+        ModelAndView mv = new ModelAndView("analyze/overview");
+
+        if(period == null || period==0){
+            period = doubleBallService.selectCurrentPeriod();
+        }
         // 本期号码：
-        Integer period = doubleBallService.selectCurrentPeriod();
+
         DoubleBall po = new DoubleBall();
         po.setPeriod(period);
         List<DoubleBall> list = doubleBallService.selectByEntity(po);
@@ -85,6 +99,28 @@ public class AnalyzeController extends BaseController{
         mv.addObject("maxRed" , doubleBallService.selectValueOrderByCount(0));
         mv.addObject("maxBlue" ,doubleBallService.selectValueOrderByCount(BallType.BLUE.getCode()));
 
+        return mv;
+    }
+
+    /**
+     * currentAnalyze --- 针对当前一期来分析
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "currentAnalyze")
+    public ModelAndView currentAnalyze () throws Exception{
+        ModelAndView mv = new ModelAndView("analyze/currentAnalyze");
+        return mv;
+    }
+
+    /**
+     * prevAnalyze --- 针对上一期的分析
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "prevAnalyze")
+    public ModelAndView prevAnalyze () throws Exception{
+        ModelAndView mv = new ModelAndView("analyze/prevAnalyze");
         return mv;
     }
 
