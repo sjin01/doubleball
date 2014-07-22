@@ -1,5 +1,6 @@
 package com.guanshj.framework.util;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -359,16 +360,79 @@ public class AnalyzeUtil {
 
         return red1 +red2;
     }
+
+    /*
+    杀红公式：
+        当期有连号时，连号相加减33下期可排除。（这个不太好算）
+
+        (下面的看起来就不靠谱 )
+        上期蓝码
+        上上期蓝码
+        上期蓝码+上上期蓝码
+        第五位加5
+        开奖日期号
+    */
+
+    /**
+     * 杀蓝公式 1
+     * 1、用15减去上期蓝球号码，得出的数就是下期要杀的蓝号尾数。
+     * @return
+     */
+    public static List<Integer> sBlue1(Integer blue){
+        return getBlueByUnitsDigit(Math.abs(15 - blue));
+    }
+
+    /**
+     * 杀蓝公式 2
+     * 用19减上期蓝号得出的数即为下期要杀的尾数
+     * @return
+     */
+    public static List<Integer> sBlue2(Integer blue){
+        return getBlueByUnitsDigit( Math.abs(19 - blue) );
+    }
+
+    /**
+     * 杀蓝公式 3
+     * 用21减上期蓝号得出的数就是下期要杀的尾数。
+     * @return
+     */
+    public static List<Integer> sBlue3(Integer blue){
+        return getBlueByUnitsDigit( Math.abs(21 - blue) );
+    }
+
+    /**
+     * 杀蓝公式 4
+     * 用上两期蓝号的头和尾相加的数即为下期要杀的蓝号尾数。
+     * @return
+     */
+    public static List<Integer> sBlue4(Integer blue1,Integer blue2){
+        String blueStr1  = String.valueOf(blue1);
+        String blueStr2  = String.valueOf(blue2);
+
+        if(blueStr1.length() <=1) {
+            blueStr1 = "0" + blueStr1;
+        }
+        if(blueStr2.length() <=1) {
+            blueStr2 = "0" + blueStr2;
+        }
+        ;
+
+        return getBlueByUnitsDigit(
+                Math.abs( Integer.valueOf(blueStr1.substring(0, 1)) + Integer.valueOf(blueStr2.substring(1)) )
+        );
+    }
+
+
 /*
      杀蓝公式：
 
-    1、用15减去上期蓝球号码，得出的数就是下期要杀的蓝号尾数。
-    例如：今年第13期双色球蓝号开出：09，用15-09=06，绝杀蓝号6尾的06和16两个号码，结果第14期开蓝号02，杀号成功!再用15-2=13，杀掉3尾的03和13，结果第15期开05，杀号又正确!我们再用15-5=10，杀0尾，结果第16期开03，我们又杀对蓝号。
-            2
-            2、用19减上期蓝号得出的数即为下期要杀的尾数。
-    例如：今年双色球第1期蓝号开04，用19-04=15，绝杀蓝号5尾的05、15两个号码，结果2期开蓝号：14，杀号成功!我们再用19-14=05，杀掉05、15，结果双色球第3期蓝号开02，杀号又成功!我们一鼓作气，再用19-02=17，杀掉07，结果第4期蓝球号码开03。
-            3、用21减上期蓝号得出的数就是下期要杀的尾数。
-    例如：双色球第20期蓝号开：13，用21-13=08，杀掉08，结果第21期开：09;再用21-09=12，杀2尾，结果第22期开08;再用21-08=13，杀3尾，结果第23期开：08，杀号正确。
+        1、用15减去上期蓝球号码，得出的数就是下期要杀的蓝号尾数。
+        例如：今年第13期双色球蓝号开出：09，用15-09=06，绝杀蓝号6尾的06和16两个号码，结果第14期开蓝号02，杀号成功!再用15-2=13，杀掉3尾的03和13，结果第15期开05，杀号又正确!我们再用15-5=10，杀0尾，结果第16期开03，我们又杀对蓝号。
+                2
+                2、用19减上期蓝号得出的数即为下期要杀的尾数。
+        例如：今年双色球第1期蓝号开04，用19-04=15，绝杀蓝号5尾的05、15两个号码，结果2期开蓝号：14，杀号成功!我们再用19-14=05，杀掉05、15，结果双色球第3期蓝号开02，杀号又成功!我们一鼓作气，再用19-02=17，杀掉07，结果第4期蓝球号码开03。
+                3、用21减上期蓝号得出的数就是下期要杀的尾数。
+        例如：双色球第20期蓝号开：13，用21-13=08，杀掉08，结果第21期开：09;再用21-09=12，杀2尾，结果第22期开08;再用21-08=13，杀3尾，结果第23期开：08，杀号正确。
             4、用上两期蓝号的头和尾相加的数即为下期要杀的蓝号尾数。
     例如：第18期开15，第19期开04，两期的头尾相加即1+4=5，杀掉5尾(05、15)，结果第20期开13，杀号成功!再用0+3=3，杀掉3尾，结果第21期开09;再用1+9=10，杀掉0尾，结果第22期蓝号开出：08。
             5、用上两期蓝号的尾和头相加的数即为下期要杀的尾数。
@@ -388,16 +452,40 @@ public class AnalyzeUtil {
             12、用上期蓝号加6等于的数就是下期蓝号要杀的尾数。
     例如：第29期蓝号开13，用13+6=19，绝杀9尾，结果第30期开07;再用07+6=13，绝杀03和13，结果下期开01;再继续用01+6=7，绝杀7，结果下期蓝号开06，例子不胜枚举。
 */
+    /**
+     * 根据尾数获取 多个红球
+     * @param unitsDigit
+     * @return
+     */
+    public static List<Integer> getRedByUnitsDigit(int unitsDigit){
+        List<Integer> list = new ArrayList<Integer>();
+        if (unitsDigit != 0) {
+            list.add(unitsDigit);
+        }
+        list.add(unitsDigit + 10);
+        list.add(unitsDigit + 20);
+        if (unitsDigit <= 3) {
 
-    /*
-    杀红公式：
-        当期有连号时，连号相加减33下期可排除。（这个不太好算）
+            list.add(unitsDigit + 30);
+        }
+        return list;
+    }
+    /**
+     * 根据尾数获取 多个蓝球
+     * @param unitsDigit
+     * @return
+     */
+    public static List<Integer> getBlueByUnitsDigit(int unitsDigit){
+        List<Integer> list = new ArrayList<Integer>();
 
-        (下面的看起来就不靠谱 )
-        上期蓝码
-        上上期蓝码
-        上期蓝码+上上期蓝码
-        第五位加5
-        开奖日期号
-    */
+        if (unitsDigit != 0) {
+            list.add(unitsDigit);
+        }
+
+        if (unitsDigit <= 6) {
+            list.add(unitsDigit + 10);
+        }
+        return list;
+    }
+
 }
