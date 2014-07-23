@@ -1,5 +1,21 @@
 This file was created by IntelliJ IDEA 12.1 for binding GitHub repository
 
+Github上git commit 提交注释的规范
+一般情况下，提交 GIT 时的注释可以分成几类，可以用几个动词开始：
+
+Added ( 新加入的需求 )
+Fixed ( 修复 bug )
+Changed ( 完成的任务 )
+Updated ( 完成的任务，或者由于第三方模块变化而做的变化 )
+尽量将注释缩减为一句话，不要包含详细的内容。
+假如有 Issues 系统，其中可以包含 Issue 的 ID。比如：Issue #123456
+包含作者的信息。比如 by sJin01
+完整例子：
+git commit -m 'Issue #[issue number] by [username]: [Short summary of the change].'
+Related articles
+
+
+
 数据库建表SQL ：
 -- ###mysql 建表
 CREATE TABLE `t_doubleball` (
