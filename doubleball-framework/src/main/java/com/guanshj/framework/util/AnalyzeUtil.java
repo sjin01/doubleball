@@ -11,7 +11,8 @@ import java.util.List;
  */
 public class AnalyzeUtil {
 
-    /*****************************8
+    /***  **************************8
+     *  TODO 说明
      *  所有的 redList 集合 都是 从小到大顺序 6个item 过来的 （index 0-5）
      *  方法命名约定：杀红 （sRed + 方法序号）；求红 （qRed+方法序号） ；杀蓝（sBlue+方法序号）；求蓝（qBlue +方法序号）
      *  算法约定：只要是减法，就要求绝对值，防止负数
@@ -361,6 +362,10 @@ public class AnalyzeUtil {
         return red1 +red2;
     }
 
+    /**
+     * TODO ---红球 公式完------------------------------------------------------------------------------------------------------
+     */
+
     /*
     杀红公式：
         当期有连号时，连号相加减33下期可排除。（这个不太好算）
@@ -415,43 +420,127 @@ public class AnalyzeUtil {
         if(blueStr2.length() <=1) {
             blueStr2 = "0" + blueStr2;
         }
-        ;
 
         return getBlueByUnitsDigit(
                 Math.abs( Integer.valueOf(blueStr1.substring(0, 1)) + Integer.valueOf(blueStr2.substring(1)) )
         );
     }
 
+    /**
+     * 杀蓝公式 5
+     * 5、用上两期蓝号的尾和头相加的数即为下期要杀的尾数。
+     * @return
+     */
+    public static List<Integer> sBlue5(Integer blue1,Integer blue2){
+        String blueStr1  = String.valueOf(blue1);
+        String blueStr2  = String.valueOf(blue2);
 
-/*
-     杀蓝公式：
+        if(blueStr1.length() <=1) {
+            blueStr1 = "0" + blueStr1;
+        }
+        if(blueStr2.length() <=1) {
+            blueStr2 = "0" + blueStr2;
+        }
 
-        1、用15减去上期蓝球号码，得出的数就是下期要杀的蓝号尾数。
-        例如：今年第13期双色球蓝号开出：09，用15-09=06，绝杀蓝号6尾的06和16两个号码，结果第14期开蓝号02，杀号成功!再用15-2=13，杀掉3尾的03和13，结果第15期开05，杀号又正确!我们再用15-5=10，杀0尾，结果第16期开03，我们又杀对蓝号。
-                2
-                2、用19减上期蓝号得出的数即为下期要杀的尾数。
-        例如：今年双色球第1期蓝号开04，用19-04=15，绝杀蓝号5尾的05、15两个号码，结果2期开蓝号：14，杀号成功!我们再用19-14=05，杀掉05、15，结果双色球第3期蓝号开02，杀号又成功!我们一鼓作气，再用19-02=17，杀掉07，结果第4期蓝球号码开03。
-                3、用21减上期蓝号得出的数就是下期要杀的尾数。
-        例如：双色球第20期蓝号开：13，用21-13=08，杀掉08，结果第21期开：09;再用21-09=12，杀2尾，结果第22期开08;再用21-08=13，杀3尾，结果第23期开：08，杀号正确。
-            4、用上两期蓝号的头和尾相加的数即为下期要杀的蓝号尾数。
-    例如：第18期开15，第19期开04，两期的头尾相加即1+4=5，杀掉5尾(05、15)，结果第20期开13，杀号成功!再用0+3=3，杀掉3尾，结果第21期开09;再用1+9=10，杀掉0尾，结果第22期蓝号开出：08。
-            5、用上两期蓝号的尾和头相加的数即为下期要杀的尾数。
-    例如：第21期开09，第22期开08，用9+0=09，杀9尾，结果23期开08;再用8+0=08，杀8尾，结果第24期开12;再用8+1=9，杀掉9尾，结果第25期开11。
-            6、用上二期蓝号尾相加得出的数就是下期要杀的尾数。
-    例如：第23期蓝号开08，第24期开12，8+2=10，杀0尾，结果下期开11;再用2+1=3，杀3尾，结果第26期开16。
-            7、用上期蓝号尾与隔一期蓝号尾相加得出的数即为下期要杀的尾数。
-    例如：第28期开10，与隔一期即26期的16相加，即为0+6=6尾，杀06和16，结果第29期开13;再用29期的13与27期的06相加得出09尾，杀9尾，结果第30期开出：07。
-            8、用上期蓝号乘以2得出的数即为下期要杀的尾数。
-    例如：第29期开出：13，用13×2=6，绝杀6尾，结果第30期开07;再用7×2=14，绝杀04和14，结果第31期开01。
-            9、用上期蓝号尾乘4得出的数即是下期要杀的尾数。
-    例如：第29期开13，用3×4=12，绝杀2尾，结果第30期开07;再用7×4=28，绝杀8尾，结果第31期开01;再用1×4=4，绝杀4尾，结果第32期开06。
-            10、用上期蓝号加7或减7，注意蓝号大于14则减7，小于14则加7，得出的数即为下期要杀的尾数。
-    例如：今年第6期开02，用2+7=9，杀9尾，结果第7期开15，完全正确!再用15-7=8，杀掉8尾，结果下期开02，我们再用2+7=9，杀尾，结果第9期开02。
-            11、用上期蓝号加2得出的数即为下期要杀的蓝号尾数。
-    例如：第29期开13，用13+2=15，杀掉5尾，结果下期开07;再用07+2=9，杀掉9尾，结果第31期开01;我们再用1+2=3，绝杀3尾的03、13，结果第32期开出06。
-            12、用上期蓝号加6等于的数就是下期蓝号要杀的尾数。
-    例如：第29期蓝号开13，用13+6=19，绝杀9尾，结果第30期开07;再用07+6=13，绝杀03和13，结果下期开01;再继续用01+6=7，绝杀7，结果下期蓝号开06，例子不胜枚举。
-*/
+        return getBlueByUnitsDigit(
+                Math.abs( Integer.valueOf(blueStr1.substring(1)) + Integer.valueOf(blueStr2.substring(0,1)) )
+        );
+    }
+
+    /**
+     * 杀蓝公式 6
+     * 6、用上二期蓝号尾相加得出的数就是下期要杀的尾数。
+     * @return
+     */
+    public static Integer sBlue6(Integer blue1,Integer blue2){
+        String blueStr1  = String.valueOf(blue1);
+        String blueStr2  = String.valueOf(blue2);
+
+        if(blueStr1.length() <=1) {
+            blueStr1 = "0" + blueStr1;
+        }
+        if(blueStr2.length() <=1) {
+            blueStr2 = "0" + blueStr2;
+        }
+        return Math.abs( Integer.valueOf(blueStr1.substring(1)) + Integer.valueOf(blueStr2.substring(1)) );
+    }
+
+    /**
+     * 杀蓝公式 7
+     * 7、用上期蓝号尾与隔一期蓝号尾相加得出的数即为下期要杀的尾数。
+     * @return
+     */
+    public static Integer sBlue7(Integer blue1,Integer blue2){
+        String blueStr1  = String.valueOf(blue1);
+        String blueStr2  = String.valueOf(blue2);
+
+        if(blueStr1.length() <=1) {
+            blueStr1 = "0" + blueStr1;
+        }
+        if(blueStr2.length() <=1) {
+            blueStr2 = "0" + blueStr2;
+        }
+        return Math.abs( Integer.valueOf(blueStr1.substring(1)) + Integer.valueOf(blueStr2.substring(1)) );
+    }
+
+    /**
+     * 杀蓝公式 8
+     * 8、用上期蓝号乘以2得出的数即为下期要杀的尾数。
+     * @return
+     */
+    public static List<Integer> sBlue8(Integer blue1){
+        return getBlueByUnitsDigit(blue1 * 2);
+    }
+
+    /**
+     * 杀蓝公式 9
+     * 9、用上期蓝号尾乘4得出的数即是下期要杀的尾数。
+     * @return
+     */
+    public static List<Integer> sBlue9(Integer blue1){
+        String blueStr = String.valueOf(blue1);
+        if(blueStr.length() >1){
+            blueStr = blueStr.substring(1);
+        }
+        return getBlueByUnitsDigit(Integer.valueOf(blueStr) * 4);
+    }
+
+    /**
+     * 杀蓝公式 10
+     * 10、用上期蓝号加7或减7，注意蓝号大于14则减7，小于14则加7，得出的数即为下期要杀的尾数。
+     * @return
+     */
+    public static List<Integer> sBlue10(Integer blue1){
+        if(blue1 > 14){
+            return getBlueByUnitsDigit(blue1 -7);
+        }else{
+            return getBlueByUnitsDigit(blue1 +7);
+
+        }
+    }
+
+    /**
+     * 杀蓝公式 11
+     * 11、用上期蓝号加2得出的数即为下期要杀的蓝号尾数。
+     * @return
+     */
+    public static List<Integer> sBlue11(Integer blue1){
+        return getBlueByUnitsDigit(blue1+2);
+    }
+
+    /**
+     * 杀蓝公式 12
+     * 12、用上期蓝号加6等于的数就是下期蓝号要杀的尾数。
+     * @return
+     */
+    public static List<Integer> sBlue12(Integer blue1){
+        return getBlueByUnitsDigit(blue1+6);
+    }
+
+    /**
+     * TODO ---蓝旗 公式完------------------------------------------------------------------------------------------------------
+     */
+
     /**
      * 根据尾数获取 多个红球
      * @param unitsDigit
