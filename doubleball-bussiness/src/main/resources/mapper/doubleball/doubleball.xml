@@ -116,7 +116,7 @@
         <include refid="where"/>
 
         <if test="id!=null"> AND id=#{id} </if>
-        <if test="period!=null"> AND period <= #{period} </if>
+        <if test="period!=null"> AND period <![CDATA[ <= ]]> #{period} </if>
         <if test="value!=null"> AND value=#{value} </if>
         <if test="type!=null"> AND type=#{type} </if>
 

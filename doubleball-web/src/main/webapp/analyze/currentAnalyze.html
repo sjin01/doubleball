@@ -1,10 +1,44 @@
 <div class="row-fluid">
     <div class="page-header">
+        <h3>&nbsp;&nbsp;本期杀球总览&nbsp;
+            <small></small>
+        </h3>
+    </div>
+
+    <div class="m_left30">
+        <h4>杀红：</h4>
+        <div class="well m_top5">
+            #foreach($sRedItem in $sRedList)
+                <span class="number">${sRedItem}</span>
+            #end
+        </div>
+
+        <h4>杀蓝：</h4>
+        <div class="well m_top5">
+            #foreach($sBlueItem in $sBlueList)
+                <span class="number">${sBlueItem}</span>
+            #end
+        </div>
+    </div>
+
+</div>
+
+<div class="row-fluid">
+    <div class="page-header">
         <h3>&nbsp;&nbsp;各种公式分析&nbsp;
             <small>本期的分析；对本期进行分析，以及提交对下期的预测</small>
         </h3>
     </div>
     <div class="m_left30">
+
+        <h4>杀红公式 1</h4>
+        <blockquote>
+            <small>当期开奖号码大小顺序第一位与第六位的差，计算的结果在下一期有可能不出</small>
+            <div class="well m_top5" >
+                <span class="number">$!{sRed1}</span>
+            </div>
+        </blockquote>
+
 
     </div>
 </div>
