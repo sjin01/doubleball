@@ -31,8 +31,14 @@ public class AnalyzeController extends BaseController{
      * @throws Exception
      */
     @RequestMapping(value = "")
-    public ModelAndView main () throws Exception {
+    public ModelAndView main ( Integer period ) throws Exception {
         ModelAndView mv = new ModelAndView("analyze/main");
+
+        if(period == null || period==0){
+            period = doubleBallService.selectCurrentPeriod();
+        }
+        mv.addObject("period",period);
+
         return mv;
     }
 
@@ -45,11 +51,7 @@ public class AnalyzeController extends BaseController{
     public ModelAndView overview (Integer period) throws Exception{
         ModelAndView mv = new ModelAndView("analyze/overview");
 
-        if(period == null || period==0){
-            period = doubleBallService.selectCurrentPeriod();
-        }
         // 本期号码：
-
         DoubleBall po = new DoubleBall();
         po.setPeriod(period);
         List<DoubleBall> list = doubleBallService.selectByEntity(po);
@@ -108,7 +110,7 @@ public class AnalyzeController extends BaseController{
      * @throws Exception
      */
     @RequestMapping(value = "currentAnalyze")
-    public ModelAndView currentAnalyze () throws Exception{
+    public ModelAndView currentAnalyze ( Integer period) throws Exception{
         ModelAndView mv = new ModelAndView("analyze/currentAnalyze");
         return mv;
     }
@@ -119,7 +121,7 @@ public class AnalyzeController extends BaseController{
      * @throws Exception
      */
     @RequestMapping(value = "prevAnalyze")
-    public ModelAndView prevAnalyze () throws Exception{
+    public ModelAndView prevAnalyze ( Integer period) throws Exception{
         ModelAndView mv = new ModelAndView("analyze/prevAnalyze");
         return mv;
     }

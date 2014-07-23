@@ -95,6 +95,7 @@
     <!-- 查询,实体查询   -->
     <select id="selectByEntity"  resultMap="BaseResultMap" parameterType="com.guanshj.model.DoubleBall">
         select <include refid="Base_Column_List"/> from t_doubleball <include refid="where"/> <include refid="andOtherAll"/>
+        order by value
     </select>
     <!--   分页 -->
     <select id="selectByEntityPaging_page" resultMap="BaseResultMap"  parameterType="com.guanshj.model.DoubleBall">
@@ -112,7 +113,14 @@
           max(case type when 16 then value else null end) redBall6,
           max(case type when 2 then value else null end) blueBall
           from t_doubleball
-        <include refid="where"/> <include refid="andOtherAll"/>
+        <include refid="where"/>
+
+        <if test="id!=null"> AND id=#{id} </if>
+        <if test="period!=null"> AND period <= #{period} </if>
+        <if test="value!=null"> AND value=#{value} </if>
+        <if test="type!=null"> AND type=#{type} </if>
+
+        <if test="sSearch !=null and sSearch !='' "> period like '%${sSearch}%'</if>
 
         group by period order by period desc
     </select>
