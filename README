@@ -15,6 +15,11 @@ git commit -m 'Issue #[issue number] by [username]: [Short summary of the change
 Related articles
 
 
+需求：
+    我的预测：保存我对一期的预测；
+    记录点击：进入到分析；传参：期号
+
+
 
 数据库建表SQL ：
 -- ###mysql 建表
