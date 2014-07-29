@@ -1,10 +1,403 @@
 <div class="row-fluid">
     <div class="page-header">
+        <h3>&nbsp;&nbsp;上期杀球总览&nbsp;
+            <small>用来验证之前的</small>
+        </h3>
+    </div>
+
+    <div class="m_left30">
+        <h4>杀红：</h4>
+        <div class="well m_top5">
+            #foreach($sRedItem in $sRedList)
+                <span class="number">${sRedItem}</span>
+            #end
+        </div>
+
+        <h4>杀蓝：</h4>
+        <div class="well m_top5">
+            #foreach($sBlueItem in $sBlueList)
+                <span class="number">${sBlueItem}</span>
+            #end
+        </div>
+    </div>
+
+</div>
+
+<div class="row-fluid">
+
+    <div class="page-header">
         <h3>&nbsp;&nbsp;各种公式分析&nbsp;
-            <small>上期的分析；以及对本期的预测，以及本期开奖预测结果</small>
+            <small>以及结果</small>
         </h3>
     </div>
     <div class="m_left30">
 
+        <ul class="nav nav-tabs" id="myTab_quota3">
+            <li><a href="#myTab_quota3_1"> 杀红</a></li>
+            <li><a href="#myTab_quota3_2"> 杀蓝</a></li>
+
+        </ul>
+
+        <div class="tab-content">
+            <div class="tab-pane" id="myTab_quota3_1" >
+                <h4>杀红公式 1</h4>
+                <blockquote>
+                    <small>当期开奖号码大小顺序第一位与第六位的差，计算的结果在下一期有可能不出</small>
+                    <div class="well m_top5" >
+                        <span class="number">$!{sRed1}</span>
+                    </div>
+                </blockquote>
+
+                <h4>杀红公式 2</h4>
+                <blockquote>
+                    <small>当期开奖号码大小顺序第二位与第三位的差，计算的结果在下一期有可能不出</small>
+                    <div class="well m_top5" >
+                        <span class="number">$!{sRed2}</span>
+                    </div>
+                </blockquote>
+
+                <h4>杀红公式 3</h4>
+                <blockquote>
+                    <small>当期开奖号码大小顺序第二位与第五位的差，计算的结果在下一期有可能不出</small>
+                    <div class="well m_top5" >
+                        <span class="number">$!{sRed3}</span>
+                    </div>
+                </blockquote>
+
+                <h4>杀红公式 4</h4>
+                <blockquote>
+                    <small>当期开奖号码大小顺序第一位乘4再减掉2，计算的结果在下一期有可能不出</small>
+                    <div class="well m_top5" >
+                        <span class="number">$!{sRed4}</span>
+                    </div>
+                </blockquote>
+
+                <h4>杀红公式 5</h4>
+                <blockquote>
+                    <small>当期开奖号码大小顺序期开第一位加当奖的蓝号，计算的结果再乘3后，所得的号码在下一期有可能不出</small>
+                    <div class="well m_top5" >
+                        <span class="number">$!{sRed5}</span>
+                    </div>
+                </blockquote>
+
+                <h4>杀红公式 6</h4>
+                <blockquote>
+                    <small>当期开奖号码大小顺序第一位加09，计算的结果在下一期有可能不出</small>
+                    <div class="well m_top5" >
+                        <span class="number">$!{sRed6}</span>
+                    </div>
+                </blockquote>
+
+                <h4>杀红公式 7</h4>
+                <blockquote>
+                    <small>当期开奖号码大小顺序第二位加05，计算的结果在下一期有可能不出</small>
+                    <div class="well m_top5" >
+                        <span class="number">$!{sRed7}</span>
+                    </div>
+                </blockquote>
+
+                <h4>杀红公式 8</h4>
+                <blockquote>
+                    <small>当期开奖号码大小顺序第三位加04，计算的结果在下一期有可能不出</small>
+                    <div class="well m_top5" >
+                        <span class="number">$!{sRed8}</span>
+                    </div>
+                </blockquote>
+
+                <h4>杀红公式 9</h4>
+                <blockquote>
+                    <small>当期开奖号码大小顺序第三位加07，计算的结果在下一期有可能不出</small>
+                    <div class="well m_top5" >
+                        <span class="number">$!{sRed9}</span>
+                    </div>
+                </blockquote>
+
+                <h4>杀红公式 10</h4>
+                <blockquote>
+                    <small>当期开奖号码大小顺序第六位加04，计算的结果在下一期有可能不出</small>
+                    <div class="well m_top5" >
+                        <span class="number">$!{sRed10}</span>
+                    </div>
+                </blockquote>
+
+                <h4>杀红公式 11</h4>
+                <blockquote>
+                    <small>当期开奖号码大小顺序第四位与第五位的差，加当期的蓝号，再加01，计算的结果在下一期有可能不出</small>
+                    <div class="well m_top5" >
+                        <span class="number">$!{sRed11}</span>
+                    </div>
+                </blockquote>
+
+                杀红 12- 17是 出号顺序， 暂没做处理
+
+                <h4>杀红公式 18</h4>
+                <blockquote>
+                    <small>当期开奖的蓝号，加当期开奖号码大小顺序第一位，计算的结果在下一期有可能不出。（备注：如遇蓝号重复，重复的蓝号再另外减去01）</small>
+                    <div class="well m_top5" >
+                        <span class="number">$!{sRed18}</span>
+                    </div>
+                </blockquote>
+
+                <h4>杀红公式 19</h4>
+                <blockquote>
+                    <small>当期开奖的蓝号，加当期开奖号码大小顺序第二位，再减去01，计算的结果在下一期有可能不出</small>
+                    <div class="well m_top5" >
+                        <span class="number">$!{sRed19}</span>
+                    </div>
+                </blockquote>
+
+                <h4>杀红公式 20</h4>
+                <blockquote>
+                    <small>当期开奖的蓝号，减当期开奖号码大小顺序第四位，再加上01，计算的结果在下一期有可能不出</small>
+                    <div class="well m_top5" >
+                        <span class="number">$!{sRed20}</span>
+                    </div>
+                </blockquote>
+
+                <h4>杀红公式 21</h4>
+                <blockquote>
+                    <small>当期开奖的蓝号，减当期开奖号码大小顺序第五位，计算的结果在下一期有可能不出</small>
+                    <div class="well m_top5" >
+                        <span class="number">$!{sRed21}</span>
+                    </div>
+                </blockquote>
+
+                <h4>杀红公式 22</h4>
+                <blockquote>
+                    <small>当期开奖的蓝号，乘当期开奖号码大小顺序第一位，计算的结果在下一期有可能不出</small>
+                    <div class="well m_top5" >
+                        <span class="number">$!{sRed22}</span>
+                    </div>
+                </blockquote>
+
+                <h4>杀红公式 23</h4>
+                <blockquote>
+                    <small>当期开奖的蓝号，加+07，计算的结果在下一期有可能不出</small>
+                    <div class="well m_top5" >
+                        <span class="number">$!{sRed23}</span>
+                    </div>
+                </blockquote>
+
+                <h4>杀红公式 24</h4>
+                <blockquote>
+                    <small>当期开奖的蓝号，加+09，计算的结果在下一期有可能不出</small>
+                    <div class="well m_top5" >
+                        <span class="number">$!{sRed24}</span>
+                    </div>
+                </blockquote>
+
+                <h4>杀红公式 25</h4>
+                <blockquote>
+                    <small>当期开奖的蓝号，乘05加+02，计算的结果在下一期有可能不出</small>
+                    <div class="well m_top5" >
+                        <span class="number">$!{sRed25}</span>
+                    </div>
+                </blockquote>
+
+                <h4>杀红公式 26</h4>
+                <blockquote>
+                    <small>当期开奖的蓝号，如为偶数时，乘上2，再加02，计算的结果在下一期有可能不出，到目前为止，此条件无错误。14*2+2=30
+                        <br/>当期开奖的蓝号，如为奇数时，乘上5，再加+02，计算的结果在下一期有可能不出</small>
+                    <div class="well m_top5" >
+                        <span class="number">$!{sRed26}</span>
+                    </div>
+                </blockquote>
+
+                <h4>杀红公式 27</h4>
+                <blockquote>
+                    <small>开奖红号按从小到大排序(第三位+第六位)除以33的余数+14,如果结果大于33,就减去33</small>
+                    <div class="well m_top5" >
+                        <span class="number">$!{sRed27}</span>
+                    </div>
+                </blockquote>
+
+                <h4>杀红公式 28</h4>
+                <blockquote>
+                    <small>上期**（红1位+红3位+红5位）/2</small>
+                    <div class="well m_top5" >
+                        <span class="number">$!{sRed28}</span>
+                    </div>
+                </blockquote>
+
+                <h4>杀红公式 29</h4>
+                <blockquote>
+                    <small>上期**  红6位减蓝1位</small>
+                    <div class="well m_top5" >
+                        <span class="number">$!{sRed29}</span>
+                    </div>
+                </blockquote>
+
+                <h4>杀红公式 30</h4>
+                <blockquote>
+                    <small>上期** 红1位*3/2</small>
+                    <div class="well m_top5" >
+                        <span class="number">$!{sRed30}</span>
+                    </div>
+                </blockquote>
+
+                <h4>杀红公式 31</h4>
+                <blockquote>
+                    <small>上期* 红1位尾加上期红2位尾</small>
+                    <div class="well m_top5" >
+                        <span class="number">$!{sRed31}</span>
+                    </div>
+                </blockquote>
+                </div>
+            <div class="tab-pane" id="myTab_quota3_2" >
+                <h4>杀蓝公式 1</h4>
+                <blockquote>
+                    <small>用15减去上期蓝球号码，得出的数就是下期要杀的蓝号尾数</small>
+                    <div class="well m_top5" >
+                        #foreach($sBlue1Item in $sBlue1)
+                            <span class="number">$!{sBlue1Item}</span>
+                        #end
+                    </div>
+                </blockquote>
+
+                <h4>杀蓝公式 2</h4>
+                <blockquote>
+                    <small>用19减上期蓝号得出的数即为下期要杀的尾数</small>
+                    <div class="well m_top5" >
+                        #foreach($sBlue2Item in $sBlue2)
+                            <span class="number">$!{sBlue2Item}</span>
+                        #end
+                    </div>
+                </blockquote>
+
+                <h4>杀蓝公式 3</h4>
+                <blockquote>
+                    <small>用21减上期蓝号得出的数就是下期要杀的尾数</small>
+                    <div class="well m_top5" >
+                        #foreach($sBlue3Item in $sBlue3)
+                            <span class="number">$!{sBlue3Item}</span>
+                        #end
+                    </div>
+                </blockquote>
+
+                <h4>杀蓝公式 4</h4>
+                <blockquote>
+                    <small>用上两期蓝号的头和尾相加的数即为下期要杀的蓝号尾数</small>
+                    <div class="well m_top5" >
+                        #foreach($sBlue4Item in $sBlue4)
+                            <span class="number">$!{sBlue4Item}</span>
+                        #end
+                    </div>
+                </blockquote>
+
+                <h4>杀蓝公式 5</h4>
+                <blockquote>
+                    <small>用上两期蓝号的尾和头相加的数即为下期要杀的尾数</small>
+                    <div class="well m_top5" >
+                        #foreach($sBlue5Item in $sBlue5)
+                            <span class="number">$!{sBlue5Item}</span>
+                        #end
+                    </div>
+                </blockquote>
+
+                <h4>杀蓝公式 6</h4>
+                <blockquote>
+                    <small>用上二期蓝号尾相加得出的数就是下期要杀的尾数</small>
+                    <div class="well m_top5" >
+                        <span class="number">$!{sBlue6}</span>
+                    </div>
+                </blockquote>
+
+                <h4>杀蓝公式 7</h4>
+                <blockquote>
+                    <small>用上期蓝号尾与隔一期蓝号尾相加得出的数即为下期要杀的尾数</small>
+                    <div class="well m_top5" >
+                        <span class="number">$!{sBlue7}</span>
+                    </div>
+                </blockquote>
+
+                <h4>杀蓝公式 8</h4>
+                <blockquote>
+                    <small>用上期蓝号乘以2得出的数即为下期要杀的尾数</small>
+                    <div class="well m_top5" >
+                        #foreach($sBlue8Item in $sBlue8)
+                            <span class="number">$!{sBlue8Item}</span>
+                        #end
+                    </div>
+                </blockquote>
+
+                <h4>杀蓝公式 9</h4>
+                <blockquote>
+                    <small>用上期蓝号尾乘4得出的数即是下期要杀的尾数</small>
+                    <div class="well m_top5" >
+                        #foreach($sBlue9Item in $sBlue9)
+                            <span class="number">$!{sBlue9Item}</span>
+                        #end
+                    </div>
+                </blockquote>
+
+                <h4>杀蓝公式 10</h4>
+                <blockquote>
+                    <small>用上期蓝号加7或减7，注意蓝号大于14则减7，小于14则加7，得出的数即为下期要杀的尾数</small>
+                    <div class="well m_top5" >
+                        #foreach($sBlue10Item in $sBlue10)
+                            <span class="number">$!{sBlue10Item}</span>
+                        #end
+                    </div>
+                </blockquote>
+
+                <h4>杀蓝公式 11</h4>
+                <blockquote>
+                    <small>用上期蓝号加2得出的数即为下期要杀的蓝号尾数</small>
+                    <div class="well m_top5" >
+                        #foreach($sBlue11Item in $sBlue11)
+                            <span class="number">$!{sBlue11Item}</span>
+                        #end
+                    </div>
+                </blockquote>
+
+                <h4>杀蓝公式 12</h4>
+                <blockquote>
+                    <small>用上期蓝号加6等于的数就是下期蓝号要杀的尾数</small>
+                    <div class="well m_top5" >
+                        #foreach($sBlue12Item in $sBlue12)
+                            <span class="number">$!{sBlue12Item}</span>
+                        #end
+                    </div>
+                </blockquote>
+            </div>
+        </div>
+
     </div>
 </div>
+
+<script type="text/javascript">
+
+    $(function () {
+        initTabs2 ();
+    })
+
+    /**
+     *   int Tab
+     */
+    function initTabs2 () {
+//        var _isload = {};
+
+        //Active Tab Component
+        $('#myTab_quota3 a').click(function (e) {
+            e.preventDefault();
+            $(this).tab('show');
+        });
+
+        //Registe show Event For Tab Component
+//        $('#myTab_quota3 a').on('show', function (e) {
+//
+//            //load this tab-pane
+//            var data_url = $(e.target).attr('data-url');
+//            var _id = $(e.target).attr('href');
+//            _id = _id.substring(_id.indexOf('#')+1);
+//
+//            if( !_isload[_id] ){// only one for load
+//                $('#'+_id).load(data_url);
+//                _isload[_id] = true;
+//            }
+//        });
+
+        //Show first Tab Panel.
+        $('#myTab_quota3 a:first').tab('show');
+    }
+</script>
