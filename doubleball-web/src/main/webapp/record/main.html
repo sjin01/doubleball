@@ -110,6 +110,7 @@
             <th>红球6</th>
             <th>蓝球</th>
             <th>操作</th>
+            <th>操作</th>
         </tr>
         </thead>
     </table>
@@ -207,8 +208,9 @@
                 { "mDataProp": "redBall5"},
                 { "mDataProp": "redBall6"},
                 { "mDataProp": "blueBall" },
-                { "mDataProp": function (source,type,val){
-                    var str = '<div class="btn-group">'+
+                {
+                    "mDataProp": function (source,type,val){
+                        var str = '<div class="btn-group">'+
                             '<button class="btn btn-mini">'+'操作'+'</button>'+
                             '<button class="btn btn-mini dropdown-toggle" data-toggle="dropdown">'+
                             '<span class="caret"></span>'+
@@ -218,8 +220,17 @@
                             '<li><a href="javascript:removeRecord('+source.period+')" >移除</a></li>'+
                             '</ul>'+
                             '</div>';
-                    return str;
-                } }
+
+
+                        return str;
+                    }
+                },
+                {
+                    "mDataProp":function (source ,type ,val){
+                        return '<a class="btn btn-mini btn-primary" href="$!{context_path}/analyze?period='
+                                +source.period+'"> 查看分析</a>';
+                    }
+                }
             ],
             "sDom": "<'row-fluid'<'span12 mySearch'>r>t<'row-fluid'<'span4'i><'span8 center'p>>",
             "sPaginationType": "bootstrap",

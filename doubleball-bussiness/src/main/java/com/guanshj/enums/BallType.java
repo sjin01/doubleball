@@ -14,6 +14,7 @@ public enum BallType {
     RED4("红球", 14),
     RED5("红球", 15),
     RED6("红球", 16),
+    RED("红球", 1),
     BLUE("蓝球", 2);
 
 

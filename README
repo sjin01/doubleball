@@ -16,8 +16,8 @@ Related articles
 
 
 需求：
-    我的预测：保存我对一期的预测；
-    记录点击：进入到分析；传参：期号
+    1我的预测：保存我对一期的预测；
+    2记录点击：进入到分析；传参：期号
 
 
 
@@ -30,6 +30,15 @@ CREATE TABLE `t_doubleball` (
   `type` int(11) DEFAULT NULL COMMENT '1红球；2蓝球',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8$$
+
+CREATE TABLE `t_conjecture` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `period` INT NULL,
+  `value` INT NULL,
+  `type` INT NULL,
+  PRIMARY KEY (`id`))
+COMMENT = '我的推测';
+
 
 -- #### 所有记录
 SELECT * FROM wyz500w;

@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="Conjecture" >
+    <resultMap id="BaseResultMap" type="com.guanshj.model.Conjecture" >
+        <id column="ID" property="id" jdbcType="INTEGER" />
+        <result column="period" property="period" jdbcType="INTEGER" />
+        <result column="value" property="value" jdbcType="INTEGER" />
+        <result column="type" property="type" jdbcType="INTEGER" />
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+        ID,period ,value ,type
+    </sql>
+
+    <!-- where 条件  -->
+    <sql id="where">
+      where 1=1
+    </sql>
+
+    <!-- columnKey  主键 列名称 ,视图获取不到主键 需要设置 -->
+    <sql id="columnKey">
+      and id=#{id}
+    </sql>
+
+    <!-- 查询条件  包含所有列 -->
+    <sql id="andOtherAll">
+        <trim  suffixOverrides="," >
+            <if test="id!=null"> AND id=#{id} </if>
+            <if test="period!=null"> AND period=#{period} </if>
+            <if test="value!=null"> AND value=#{value} </if>
+            <if test="type!=null"> AND type=#{type} </if>
+
+            <if test="sSearch !=null and sSearch !='' "> period like '%${sSearch}%'</if>
+        </trim>
+    </sql>
+
+    <!-- 添加,插入记录   -->
+    <insert id="insert" parameterType="com.guanshj.model.Conjecture">
+        <!-- mysql 主键 自动增长 -->
+        insert into t_conjecture
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id!=null"> id, </if>
+            <if test="period!=null"> period, </if>
+            <if test="value!=null"> value, </if>
+            <if test="type!=null"> type, </if>
+        </trim>
+        VALUES
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id!=null"> #{id}, </if>
+            <if test="period!=null"> #{period}, </if>
+            <if test="value!=null"> #{value}, </if>
+            <if test="type!=null"> #{type}, </if>
+        </trim>
+    </insert>
+
+    <!--  insertList 批量插入  mysql 主键需要自增 -->
+    <insert id="insertList" parameterType="java.util.List">
+        insert into t_conjecture (  period ,value ,type )
+        values
+        <foreach collection="list" item="item" index="index"  separator="," >
+            (
+                #{item.period},
+                #{item.value},
+                #{item.type}
+            )
+        </foreach>
+    </insert>
+
+    <!-- 删除,主键删除   -->
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Object">
+        delete from t_conjecture <include refid="where"/><include refid="columnKey"/>
+    </delete>
+    <!-- 删除,实体删除   -->
+    <delete id="deleteByEntity" parameterType="com.guanshj.model.Conjecture">
+        delete from t_conjecture <include refid="where"/><include refid="andOtherAll"/>
+    </delete>
+
+    <!-- 修改,主键更新  -->
+    <update id="updateByid" parameterType="com.guanshj.model.Conjecture">
+        update t_conjecture
+        <set>
+            <if test="id!=null"> id=#{id}, </if>
+            <if test="period!=null"> period=#{period}, </if>
+            <if test="value!=null"> value=#{value}, </if>
+            <if test="type!=null"> type=#{type}, </if>
+        </set>
+        <include refid="where"/><include refid="columnKey"/>
+    </update>
+
+    <!-- 查询,主键查询   -->
+    <select id="selectByPrimaryKey"  resultMap="BaseResultMap" parameterType="java.lang.Object">
+        select <include refid="Base_Column_List"/> from t_conjecture <include refid="where"/> <include refid="columnKey"/>
+    </select>
+    <!-- 查询,实体查询   -->
+    <select id="selectByEntity"  resultMap="BaseResultMap" parameterType="com.guanshj.model.Conjecture">
+        select <include refid="Base_Column_List"/> from t_conjecture <include refid="where"/> <include refid="andOtherAll"/>
+        order by value
+    </select>
+    <!--   分页 -->
+    <select id="selectByEntityPaging_page" resultMap="BaseResultMap"  parameterType="com.guanshj.model.Conjecture">
+        select <include refid="Base_Column_List"/> from t_conjecture <include refid="where"/> <include refid="andOtherAll"/>
+    </select>
+    
+    <!-- 查询 view 横向显示红球-->
+    <select id="selectTableDataView_page" resultType="com.guanshj.vo.ConjectureDto" parameterType="com.guanshj.model.Conjecture">
+        select period ,
+          max(case type when 11 then value else null end) redBall1,
+          max(case type when 12 then value else null end) redBall2,
+          max(case type when 13 then value else null end) redBall3,
+          max(case type when 14 then value else null end) redBall4,
+          max(case type when 15 then value else null end) redBall5,
+          max(case type when 16 then value else null end) redBall6,
+          max(case type when 2 then value else null end) blueBall
+          from t_conjecture
+        <include refid="where"/>
+
+        <if test="id!=null"> AND id=#{id} </if>
+        <if test="period!=null"> AND period <![CDATA[ <= ]]> #{period} </if>
+        <if test="value!=null"> AND value=#{value} </if>
+        <if test="type!=null"> AND type=#{type} </if>
+
+        <if test="sSearch !=null and sSearch !='' "> period like '%${sSearch}%'</if>
+
+        group by period order by period desc
+    </select>
+
+    <!-- 概览统计## 分组、并按出现次数排序 -->
+    <select id="selectValueOrderByCount" resultMap="BaseResultMap" parameterType="java.util.Map">
+      select value, count(value) as count
+      from t_conjecture
+      where
+        <if test="type == 2">
+            type = #{type}
+        </if>
+        <if test="type != 2">
+            type like '1%'
+        </if>
+      group by value
+      order by count desc
+    </select>
+
+</mapper>
