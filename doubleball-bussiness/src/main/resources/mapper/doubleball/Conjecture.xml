@@ -101,29 +101,6 @@
         select <include refid="Base_Column_List"/> from t_conjecture <include refid="where"/> <include refid="andOtherAll"/>
     </select>
     
-    <!-- 查询 view 横向显示红球-->
-    <select id="selectTableDataView_page" resultType="com.guanshj.vo.ConjectureDto" parameterType="com.guanshj.model.Conjecture">
-        select period ,
-          max(case type when 11 then value else null end) redBall1,
-          max(case type when 12 then value else null end) redBall2,
-          max(case type when 13 then value else null end) redBall3,
-          max(case type when 14 then value else null end) redBall4,
-          max(case type when 15 then value else null end) redBall5,
-          max(case type when 16 then value else null end) redBall6,
-          max(case type when 2 then value else null end) blueBall
-          from t_conjecture
-        <include refid="where"/>
-
-        <if test="id!=null"> AND id=#{id} </if>
-        <if test="period!=null"> AND period <![CDATA[ <= ]]> #{period} </if>
-        <if test="value!=null"> AND value=#{value} </if>
-        <if test="type!=null"> AND type=#{type} </if>
-
-        <if test="sSearch !=null and sSearch !='' "> period like '%${sSearch}%'</if>
-
-        group by period order by period desc
-    </select>
-
     <!-- 概览统计## 分组、并按出现次数排序 -->
     <select id="selectValueOrderByCount" resultMap="BaseResultMap" parameterType="java.util.Map">
       select value, count(value) as count
