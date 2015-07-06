@@ -117,7 +117,7 @@
 
 </div>
 
-<div class="modal hide fade" id="edit_model" style="width: 700px; margin: -250px 0 0 -350px;">
+<div class="modal hide #*fade*#" id="edit_model" style="width: 700px; margin: -250px 0 0 -350px;">
 
     <div class="modal-header">
 
@@ -286,6 +286,8 @@
         }else if(flag == 2){
             params = $("#updateRecord_form").serialize();
             url = '$!{context_path}/record/update';
+
+            $('#btnClose').click();
         }
 
         jQuery.ajax({

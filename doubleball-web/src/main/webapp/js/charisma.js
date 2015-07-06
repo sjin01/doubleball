@@ -876,7 +876,7 @@ function myModel(content, title, duration) {
 function myConfirm(message, fn, option) {
     var idx = new Date().getTime() + '';
 
-    $('<div id="myModal' + idx + '" class="modal hide fade" data-backdrop="false">' +
+    $('<div id="myModal' + idx + '" class="modal hide /*fade*/" data-backdrop="false">' +
         '<div class="modal-header">' +
         '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>' +
         '<h3 id="myModalLabel">操作提示</h3>' +
